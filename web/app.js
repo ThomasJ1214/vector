@@ -60,4 +60,4 @@ function work(active,result,inspected){$('work').replaceChildren();$('workTitle'
  if(r.t===null)line('R = 0: direction is undefined.');else{line(r.x===0?`x = 0: use the y-axis direction → ${fmt(r.t)}°`:`θ = atan(${fmt(r.y)} / ${fmt(r.x)}), with quadrant correction → ${fmt(r.t)}° CCW from +x`);line(VM.bearing(r.t));}
 }
 window.addEventListener('resize',()=>render());
-loadDemo('compass');
+render();

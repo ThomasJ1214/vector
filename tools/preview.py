@@ -8,13 +8,28 @@ from basic_harness import Machine
 COLORS={10:'#3264b7',11:'#c4483b',12:'#182922',14:'#408756',15:'#c88335',23:'#bcc8bc'}
 def number(x):return format(x,'.10g') if isinstance(x,(int,float)) else str(x)
 def text(x,y,s,color='#182922',size=5):return f'<text xml:space="preserve" x="{x}" y="{y}" fill="{color}" font-size="{size}" font-family="monospace">{escape(s)}</text>'
-def screen(m,graph):
+def home_screen(commands):
+    cells=[[' ']*26 for _ in range(10)]
+    cursor=0
+    for cmd in commands:
+        if cmd[0]=='Output':
+            _,row,col,value=cmd
+            for i,ch in enumerate(number(value)):
+                if col+i<=26:cells[int(row)-1][int(col)-1+i]=ch
+        elif cmd[0]=='Disp':
+            if cursor>=10:
+                cells.pop(0);cells.append([' ']*26);cursor=9
+            value=number(cmd[1])[:26]
+            cells[cursor]=list(value.ljust(26));cursor+=1
+    return ''.join(text(3,14+row*16,''.join(chars),size=15.5) for row,chars in enumerate(cells))
+
+def screen(m,graph,commands=None):
     pieces=['<rect width="265" height="165" fill="#fcfdf6"/>']
     if graph:
         v=m.v
         X=lambda x:264*(x-v['Xmin'])/(v['Xmax']-v['Xmin'])
         Y=lambda y:164*(v['Ymax']-y)/(v['Ymax']-v['Ymin'])
-        for command in m.graph:
+        for command in m.graph if commands is None else commands:
             if command[0]=='Line':
                 _,x1,y1,x2,y2,c=command
                 pieces.append(f'<line x1="{X(x1)}" y1="{Y(y1)}" x2="{X(x2)}" y2="{Y(y2)}" stroke="{COLORS[c]}" stroke-width=".8"/>')
@@ -22,13 +37,7 @@ def screen(m,graph):
                 _,c,y,x,*values=command
                 pieces.append(text(x,y+5,''.join(map(number,values)),COLORS[c]))
     else:
-        cells=[[' ']*26 for _ in range(10)]
-        for cmd in m.pages[1]: # startup Pause is page 0; vector list is page 1
-            if cmd[0]=='Output':
-                _,row,col,value=cmd
-                for i,ch in enumerate(number(value)):
-                    if col+i<=26:cells[int(row)-1][int(col)-1+i]=ch
-        for row,chars in enumerate(cells):pieces.append(text(3,14+row*16,''.join(chars),size=15.5))
+        pieces.append(home_screen(m.pages[1] if commands is None else commands))
     return ''.join(pieces)
 def main():
     scenes=[]

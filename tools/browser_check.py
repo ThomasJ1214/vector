@@ -17,10 +17,21 @@ with sync_playwright() as p:
     page=browser.new_page(viewport={'width':1440,'height':1080},device_scale_factor=1)
     errors=[];page.on('pageerror',lambda e:errors.append(str(e)))
     page.goto(base+'index.html')
+    assert page.locator('#count').inner_text()=='0 / 20'
+    assert page.locator('#rx').inner_text()=='0'
+    assert page.locator('#resultAngle').inner_text()=='Undefined'
+    for field in ['magnitude','angle','xInput','yInput']:
+        assert page.locator('#'+field).input_value()==''
+    page.screenshot(path=str(ROOT/'docs/browser-preview.png'),full_page=True)
+    page.locator('#magnitude').fill('24');page.locator('#angle').fill('30')
+    page.locator('#direction').select_option('EN');page.locator('#saveVector').click()
     assert page.locator('#count').inner_text()=='1 / 20'
     assert abs(float(page.locator('#rx').inner_text())-12)<1e-8
     assert page.locator('#resultAngle').inner_text()=='60°'
-    page.screenshot(path=str(ROOT/'docs/browser-preview.png'),full_page=True)
+    page.reload()
+    assert page.locator('#count').inner_text()=='0 / 20'
+    page.locator('#exampleCompass').click()
+    assert page.locator('#count').inner_text()=='1 / 20'
     page.locator('#example345').click()
     assert page.locator('#resultMagnitude').inner_text()=='5'
     for view in ['origin','triangle','step']:
@@ -72,39 +83,40 @@ with sync_playwright() as p:
     for direction in ['EN','WN','ES','WS','NE','SE','NW','SW']:
         page.locator('#magnitude').fill('24');page.locator('#angle').fill('30');page.locator('#direction').select_option(direction);page.locator('#saveVector').click()
     assert page.locator('#count').inner_text()=='8 / 20'
-    page.set_viewport_size({'width':390,'height':844});page.locator('#exampleCompass').click()
+    page.set_viewport_size({'width':390,'height':844});page.reload()
+    assert page.locator('#count').inner_text()=='0 / 20'
     assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth')
     assert page.locator('.logo').bounding_box()['height']<80
     assert page.locator('#plot').get_attribute('viewBox')=='0 0 390 390'
     page.screenshot(path=str(ROOT/'docs/browser-mobile.png'),full_page=True)
     page.set_viewport_size({'width':1440,'height':1080})
     page.goto(base+'dist/try-vector.html')
-    assert page.locator('#count').inner_text()=='1 / 20'
-    assert page.locator('#resultAngle').inner_text()=='60°'
+    assert page.locator('#count').inner_text()=='0 / 20'
+    assert page.locator('#resultAngle').inner_text()=='Undefined'
     # Previews may allow scripts while blocking native form submission.
     # Exercise the actual single-file artifact inside that restricted frame.
     page.set_content('<iframe sandbox="allow-scripts" src="'+base+'dist/try-vector.html" style="width:1100px;height:1000px"></iframe>')
     frame=page.frame_locator('iframe')
-    assert frame.locator('#count').inner_text()=='1 / 20'
+    assert frame.locator('#count').inner_text()=='0 / 20'
     frame.locator('#magnitude').fill('5');frame.locator('#angle').fill('0')
     frame.locator('#direction').select_option('standard')
     frame.locator('#saveVector').click()
-    assert frame.locator('#count').inner_text()=='2 / 20'
-    assert frame.locator('#rx').inner_text()=='17'
+    assert frame.locator('#count').inner_text()=='1 / 20'
+    assert frame.locator('#rx').inner_text()=='5'
     frame.locator('#angle').press('Enter')
-    assert frame.locator('#count').inner_text()=='3 / 20'
-    assert frame.locator('#rx').inner_text()=='22'
+    assert frame.locator('#count').inner_text()=='2 / 20'
+    assert frame.locator('#rx').inner_text()=='10'
     frame.locator('[data-type="xy"]').click()
     frame.locator('#xInput').fill('-2');frame.locator('#yInput').fill('3')
     frame.locator('#saveVector').click()
-    assert frame.locator('#count').inner_text()=='4 / 20'
-    frame.locator('[aria-label="Edit vector 4"]').click()
+    assert frame.locator('#count').inner_text()=='3 / 20'
+    frame.locator('[aria-label="Edit vector 3"]').click()
     frame.locator('#xInput').fill('-4');frame.locator('#saveVector').click()
-    assert frame.locator('#count').inner_text()=='4 / 20'
+    assert frame.locator('#count').inner_text()=='3 / 20'
     assert '-4' in frame.locator('#vectors').inner_text()
     frame.locator('#xInput').fill('2+3');frame.locator('#saveVector').click()
     assert frame.locator('#error').inner_text()
-    assert frame.locator('#count').inner_text()=='4 / 20'
+    assert frame.locator('#count').inner_text()=='3 / 20'
     page.goto(base+'docs/calculator-preview.svg')
     page.locator('svg').first.screenshot(path=str(ROOT/'docs/calculator-preview.png'))
     assert not errors,errors

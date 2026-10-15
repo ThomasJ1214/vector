@@ -6,9 +6,15 @@ A native, unprotected **TI-BASIC** program for the **TI-84 Plus CE** and **TI-84
 
 ## Try it and see it
 
-- Open [the interactive demo](dist/try-vector.html) in a browser, or open `index.html` from this repository. The single-file demo works offline and includes compass entry, editing, all graph views, triangles, step-through addition, and worked calculations. Data stays in the tab; refreshing resets the demo.
+- Open [the interactive demo](dist/try-vector.html) in a browser, or open `index.html` from this repository. The single-file demo works offline and includes compass entry, editing, all graph views, triangles, step-through addition, and worked calculations. Data stays in the tab; it starts with an empty list and blank inputs, and refreshing returns to that empty state. Example buttons load vectors only when you choose them.
 - [Browser screenshot](docs/browser-preview.png) · [mobile screenshot](docs/browser-mobile.png)
 - [Calculator layout picture](docs/calculator-preview.png): rendered from the source drawing commands with approximate fonts; **not a hardware or emulator screenshot**.
+
+### Calculator-screen video and image collection
+
+[Watch the 40-screen walkthrough](docs/walkthrough/vector-ce-walkthrough.mp4) · [video player](docs/walkthrough/index.html) · [all images as a ZIP](docs/walkthrough/walkthrough-images.zip) · [storyboard overview](docs/walkthrough/contact-sheet.png).
+
+The two-minute video shows entry, review, vector addition, graph modes, triangles, calculations, compass directions and cancellation on a calculator-style screen. It is explicitly labeled a **source-layout simulation, not hardware or emulator footage**. [Media details and regeneration instructions](docs/walkthrough/README.md).
 
 The browser version is a companion for trying the workflow. The eight `.8xp` programs are the calculator product. JavaScript uses binary64 arithmetic; TI-BASIC uses the calculator's own numeric precision.
 

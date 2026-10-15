@@ -1,0 +1,368 @@
+{
+  "kind": "source-layout simulation, NOT emulator or hardware footage",
+  "width": 1280,
+  "height": 720,
+  "duration_seconds": 120.5,
+  "frames": [
+    {
+      "frame": 1,
+      "png": "frames/frame-001.png",
+      "start_seconds": 0,
+      "title": "Welcome to Vector CE",
+      "caption": "Native TI-BASIC workflow for TI-84 Plus CE and CE Python.",
+      "key": "PRGM / VECTORCE / ENTER",
+      "duration": 4
+    },
+    {
+      "frame": 2,
+      "png": "frames/frame-002.png",
+      "start_seconds": 4,
+      "title": "Choose the session workspace",
+      "caption": "Back up matrix [J] and the documented variables before starting.",
+      "key": "YES START",
+      "duration": 2.5
+    },
+    {
+      "frame": 3,
+      "png": "frames/frame-003.png",
+      "start_seconds": 6.5,
+      "title": "Start with an empty vector list",
+      "caption": "Vectors are loaded only when you enter them. There are no default vectors.",
+      "key": "ADD VECTOR",
+      "duration": 2.5
+    },
+    {
+      "frame": 4,
+      "png": "frames/frame-004.png",
+      "start_seconds": 9.0,
+      "title": "Vector 1 / polar input",
+      "caption": "First enter 3 units pointing along the positive x-axis.",
+      "key": "MAG / ANGLE",
+      "duration": 2.5
+    },
+    {
+      "frame": 5,
+      "png": "frames/frame-005.png",
+      "start_seconds": 11.5,
+      "title": "Enter magnitude >= 0",
+      "caption": "The magnitude uses your chosen consistent units.",
+      "key": "Type 3 / ENTER",
+      "duration": 2.5
+    },
+    {
+      "frame": 6,
+      "png": "frames/frame-006.png",
+      "start_seconds": 14.0,
+      "title": "Choose a direction convention",
+      "caption": "Standard angles are measured counterclockwise from +x.",
+      "key": "STANDARD CCW +X",
+      "duration": 2.5
+    },
+    {
+      "frame": 7,
+      "png": "frames/frame-007.png",
+      "start_seconds": 16.5,
+      "title": "Enter angle in degrees",
+      "caption": "Zero degrees points east or to the right.",
+      "key": "Type 0 / ENTER",
+      "duration": 2.5
+    },
+    {
+      "frame": 8,
+      "png": "frames/frame-008.png",
+      "start_seconds": 19.0,
+      "title": "Review vector 1",
+      "caption": "The calculator stores x=3, y=0 and magnitude 3.",
+      "key": "ENTER: vector options",
+      "duration": 3
+    },
+    {
+      "frame": 9,
+      "png": "frames/frame-009.png",
+      "start_seconds": 22.0,
+      "title": "Vector 2 / component input",
+      "caption": "Mix input types: add an upward vector using its components.",
+      "key": "X / Y",
+      "duration": 2.5
+    },
+    {
+      "frame": 10,
+      "png": "frames/frame-010.png",
+      "start_seconds": 24.5,
+      "title": "Enter horizontal x",
+      "caption": "The second vector has no horizontal component.",
+      "key": "Type 0 / ENTER",
+      "duration": 2.5
+    },
+    {
+      "frame": 11,
+      "png": "frames/frame-011.png",
+      "start_seconds": 27.0,
+      "title": "Enter vertical y",
+      "caption": "Its positive vertical component points north or up.",
+      "key": "Type 4 / ENTER",
+      "duration": 2.5
+    },
+    {
+      "frame": 12,
+      "png": "frames/frame-012.png",
+      "start_seconds": 29.5,
+      "title": "Review vector 2",
+      "caption": "The second vector is 4 units at 90 degrees.",
+      "key": "ENTER: vector options",
+      "duration": 3
+    },
+    {
+      "frame": 13,
+      "png": "frames/frame-013.png",
+      "start_seconds": 32.5,
+      "title": "Choose a graph view",
+      "caption": "Head-to-tail shows the actual order of addition.",
+      "key": "HEAD TO TAIL",
+      "duration": 2.5
+    },
+    {
+      "frame": 14,
+      "png": "frames/frame-014.png",
+      "start_seconds": 35.0,
+      "title": "Head to tail / 3 plus 4",
+      "caption": "Blue arrows add in sequence. Red joins the origin to the final endpoint.",
+      "key": "CLEAR: back",
+      "duration": 4
+    },
+    {
+      "frame": 15,
+      "png": "frames/frame-015.png",
+      "start_seconds": 39.0,
+      "title": "Compare at a common origin",
+      "caption": "The same two vectors are drawn from one starting point.",
+      "key": "CLEAR: back",
+      "duration": 4
+    },
+    {
+      "frame": 16,
+      "png": "frames/frame-016.png",
+      "start_seconds": 43.0,
+      "title": "Step through addition / 0",
+      "caption": "Start at zero. No vectors have been added yet.",
+      "key": "RIGHT",
+      "duration": 3
+    },
+    {
+      "frame": 17,
+      "png": "frames/frame-017.png",
+      "start_seconds": 46.0,
+      "title": "Step through addition / 1",
+      "caption": "Add vector 1: the running resultant is (3,0).",
+      "key": "RIGHT",
+      "duration": 3
+    },
+    {
+      "frame": 18,
+      "png": "frames/frame-018.png",
+      "start_seconds": 49.0,
+      "title": "Step through addition / 2",
+      "caption": "Add vector 2: the running resultant is (3,4).",
+      "key": "CLEAR",
+      "duration": 3
+    },
+    {
+      "frame": 19,
+      "png": "frames/frame-019.png",
+      "start_seconds": 52.0,
+      "title": "Total components",
+      "caption": "Rx=3 and Ry=4. The stored values retain native precision.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 20,
+      "png": "frames/frame-020.png",
+      "start_seconds": 55.0,
+      "title": "Vector 1 components",
+      "caption": "Vector 1 contributes x=3, y=0.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 21,
+      "png": "frames/frame-021.png",
+      "start_seconds": 58.0,
+      "title": "Add the first x component",
+      "caption": "The running x sum becomes 3.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 22,
+      "png": "frames/frame-022.png",
+      "start_seconds": 61.0,
+      "title": "Add the first y component",
+      "caption": "The running y sum remains 0.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 23,
+      "png": "frames/frame-023.png",
+      "start_seconds": 64.0,
+      "title": "Vector 2 components",
+      "caption": "Vector 2 contributes x=0, y=4.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 24,
+      "png": "frames/frame-024.png",
+      "start_seconds": 67.0,
+      "title": "Add the next x component",
+      "caption": "Add zero: the x total is still 3.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 25,
+      "png": "frames/frame-025.png",
+      "start_seconds": 70.0,
+      "title": "Add the next y component",
+      "caption": "Add four: the y total becomes 4.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 26,
+      "png": "frames/frame-026.png",
+      "start_seconds": 73.0,
+      "title": "Resultant magnitude",
+      "caption": "sqrt(3 squared + 4 squared) = 5 units.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 27,
+      "png": "frames/frame-027.png",
+      "start_seconds": 76.0,
+      "title": "Handle the correct quadrant",
+      "caption": "Axis cases and negative x values have explicit handling.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 28,
+      "png": "frames/frame-028.png",
+      "start_seconds": 79.0,
+      "title": "Substitute the components",
+      "caption": "Use atan(4/3), then apply the appropriate quadrant correction.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 29,
+      "png": "frames/frame-029.png",
+      "start_seconds": 82.0,
+      "title": "Resultant direction",
+      "caption": "53.13010235 degrees CCW; equivalently north of east.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 3
+    },
+    {
+      "frame": 30,
+      "png": "frames/frame-030.png",
+      "start_seconds": 85.0,
+      "title": "Inspect the resultant triangle",
+      "caption": "Green x=3 and orange y=4 form a right triangle with hypotenuse R=5.",
+      "key": "CLEAR: back",
+      "duration": 4
+    },
+    {
+      "frame": 31,
+      "png": "frames/frame-031.png",
+      "start_seconds": 89.0,
+      "title": "Use a compass description",
+      "caption": "Example: 24 units at 30 degrees east of north.",
+      "key": "COMPASS WORDS",
+      "duration": 2.5
+    },
+    {
+      "frame": 32,
+      "png": "frames/frame-032.png",
+      "start_seconds": 91.5,
+      "title": "Start from north",
+      "caption": "The first reference direction is north, not east.",
+      "key": "NORTH",
+      "duration": 2.5
+    },
+    {
+      "frame": 33,
+      "png": "frames/frame-033.png",
+      "start_seconds": 94.0,
+      "title": "Turn toward east",
+      "caption": "30 degrees east of north converts to 60 degrees CCW from +x.",
+      "key": "EAST OF NORTH",
+      "duration": 2.5
+    },
+    {
+      "frame": 34,
+      "png": "frames/frame-034.png",
+      "start_seconds": 96.5,
+      "title": "Review a compass vector",
+      "caption": "x=12; y is approximately 20.78460969; magnitude=24.",
+      "key": "ENTER: options",
+      "duration": 4
+    },
+    {
+      "frame": 35,
+      "png": "frames/frame-035.png",
+      "start_seconds": 100.5,
+      "title": "Negative components / quadrant II",
+      "caption": "A negative x component points west. The direction is 126.86989765 degrees.",
+      "key": "CLEAR: back",
+      "duration": 4
+    },
+    {
+      "frame": 36,
+      "png": "frames/frame-036.png",
+      "start_seconds": 104.5,
+      "title": "Opposite vectors cancel",
+      "caption": "The resultant is zero. Its direction is undefined, not zero degrees.",
+      "key": "ENTER: next / CLEAR: back",
+      "duration": 4
+    },
+    {
+      "frame": 37,
+      "png": "frames/frame-037.png",
+      "start_seconds": 108.5,
+      "title": "Cancellation / head to tail",
+      "caption": "The final endpoint returns to the origin.",
+      "key": "CLEAR: back",
+      "duration": 4
+    },
+    {
+      "frame": 38,
+      "png": "frames/frame-038.png",
+      "start_seconds": 112.5,
+      "title": "Edit without restarting",
+      "caption": "An edit replaces the selected vector only after all values are valid.",
+      "key": "EDIT",
+      "duration": 2.5
+    },
+    {
+      "frame": 39,
+      "png": "frames/frame-039.png",
+      "start_seconds": 115.0,
+      "title": "Delete with confirmation",
+      "caption": "Delete shifts the remaining vectors while keeping their order.",
+      "key": "YES",
+      "duration": 2.5
+    },
+    {
+      "frame": 40,
+      "png": "frames/frame-040.png",
+      "start_seconds": 117.5,
+      "title": "Controls are always available",
+      "caption": "Return to the main menu to review conventions and input limits.",
+      "key": "ENTER / main menu",
+      "duration": 3
+    }
+  ]
+}
