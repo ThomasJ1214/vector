@@ -1,0 +1,19 @@
+0→X
+0→Y
+0→W
+For(K,1,N)
+X+[J](K,1)→X
+Y+[J](K,2)→Y
+X→[J](K,6)
+Y→[J](K,7)
+W+[J](K,3)→W
+End
+X→A
+Y→B
+prgmVQMATH
+0→Z
+If R=0
+1→Z
+If W>0 and R>0 and R≤10^(⁻12)*W
+2→Z
+Return

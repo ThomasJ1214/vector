@@ -1,0 +1,21 @@
+max(abs(A),abs(B))→H
+0→R
+0→T
+If H=0
+Return
+H*√((A/H)^2+(B/H)^2)→R
+If A=0
+Then
+90→T
+If B<0
+270→T
+Else
+tan⁻¹(B/A)→T
+If A<0
+T+180→T
+If T<0
+T+360→T
+End
+If T≥360
+0→T
+Return

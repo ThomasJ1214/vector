@@ -1,0 +1,26 @@
+# Command research and compatibility decisions
+
+This is TI-BASIC, not TI-Python. Both requested CE models support TI-BASIC programs through PRGM. No native executable or Python APIs are needed. Color/graph features target the CE family; monochrome TI-83/84 calculators are not supported by this screen layout.
+
+## References inspected
+
+1. [TI Toolkit token sheets](https://github.com/TI-Toolkit/tokens/blob/41d03530594431a2a4eb213bbc01883df0be0528/8X.xml), revision `41d03530594431a2a4eb213bbc01883df0be0528`. The XML records calculator/OS introduction and spellings for commands. Checked Menu, Input, Output, getKey, dim, Fill, If/Then/Else, For, Repeat, Line, Text, TextColor, BackgroundOff, graph mode commands, strings, trig and numeric functions. All used tokens predate or belong to the CE's inherited command set; no recent `toString(` dependency was introduced.
+2. [ClrHome command catalog](https://github.com/clrhome/catalog/blob/8465d2505ac5b7f0f247be295a025ee7c9f31f00/src/catalog.xml). Inspected TI-BASIC syntax for Input, Menu (up to seven options), Output, getKey, matrix dim assignment, For, Repeat, trig, Text and Line. This catalog also includes Axe/Grammer entries; those are **not** used. Its monochrome pixel bounds and monochrome Line optional argument are **not** treated as CE color specifications.
+3. [CE Pong example](https://github.com/Witchtel01/ti84-plusCE-pong/tree/857b9d0babeee6708516f135c8fe3daad2b14d09). Inspected its actual tokenized TI-BASIC program using tivars, confirming CE usage of `TextColor`, `Text(row,column,...)`, and `Line(x1,y1,x2,y2,color)`. No source was copied into this project.
+4. [CE TI-BASIC ray tracing example](https://github.com/TheScienceElf/TiBASIC-Raytracing/tree/0ad64058333ff46aae3e1c2876b90185e39b605e). Inspected its tokenized CE program, including the 264/164 graph span relationship and colored pixel use. The program here uses the corresponding CE logical graph space (265 × 165 positions), not the physical 320 × 240 LCD dimensions.
+5. [TI Toolkit tivars library](https://github.com/TI-Toolkit/tivars_lib_py), installed package **tivars 1.1.1**. Used for model-aware tokenization, TI program containers, and checksums. Tokenization success does not constitute TI-BASIC syntax execution or on-device testing.
+6. [CEmu README](https://github.com/CE-Programming/CEmu/blob/7c4aa0b9e83434e2b4d31d5c21166e9954a7416e/README.md). CEmu is suitable for TI-84 Plus CE testing but requires a ROM dumped from the user's own calculator. No such ROM is available in this workspace. No ROM was downloaded and no emulator test was claimed.
+
+## Official documentation access limit
+
+Attempts to retrieve the [TI-84 Plus CE reference guide](https://education.ti.com/html/eguides/graphing/84PlusCE/EN/Subsystems/ti_84_ce_ref/Content/M_Ref/Programming/Programm.htm) and TI's reference PDF returned HTTP 403 from this environment's network route. Direct TI-Basic Developer requests were also blocked. The conclusions above use the accessible token tables, catalog and CE programs, rather than pretending those official pages were read. The official TI Connect CE download page is linked in the README for the user.
+
+## Implementation choices
+
+- TI's angle mode controls trig; the program explicitly uses Degree and restores the initial angle mode on normal exit.
+- Quadrant handling is implemented with inverse tangent and explicit axis cases rather than relying on an unsupported `atan2` spelling.
+- Every Menu has at most seven choices and every label has at most two characters. Helpers are ordinary unprotected programs with names of at most eight characters.
+- Inputs are captured as strings and parsed as decimal digits. They are not passed to `expr(`, preventing malformed expressions from causing evaluation errors or modifying workspace variables.
+- Matrix [J] holds data after visible consent, leaving user lists alone. No automatic GDB/picture backup can overwrite existing files.
+- Lines and short angled line segments make arrows. Color constants are numeric: blue 10, red 11, black 12, green 14, orange 15, gray 23.
+- All code is tokenized against the CE model. The latest required token family according to tivars' minimum-OS metadata is inherited color-84 functionality; CE support is an intended compatibility target, pending calculator/emulator acceptance testing.

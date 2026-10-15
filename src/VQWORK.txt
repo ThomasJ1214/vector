@@ -1,0 +1,222 @@
+prgmVQSUM
+If L=0
+Then
+ClrHome
+Output(1,1,"RESULTANT / COMPONENTS")
+Output(2,1,"--------------------------")
+Output(4,1,"RX")
+Output(4,6,X)
+Output(5,1,"RY")
+Output(5,6,Y)
+Output(7,1,"RX=SUM X, RY=SUM Y")
+prgmVQPAGE
+If F=0
+Return
+For(I,1,N)
+ClrHome
+Output(1,1,"VECTOR COMPONENTS")
+Output(2,1,"--------------------------")
+Output(3,1,"VECTOR")
+Output(3,9,I)
+Output(5,1,"X")
+Output(5,6,[J](I,1))
+Output(6,1,"Y")
+Output(6,6,[J](I,2))
+prgmVQPAGE
+If F=0
+Return
+0→A
+0→B
+If I>1
+Then
+[J](I-1,6)→A
+[J](I-1,7)→B
+End
+ClrHome
+Output(1,1,"RUNNING SUM / X")
+Output(2,1,"--------------------------")
+Output(3,1,"RX=PREVIOUS+COMPONENT")
+Output(5,1,"PREV")
+Output(5,8,A)
+Output(6,1,"PLUS")
+Output(6,8,[J](I,1))
+Output(8,1,"TOTAL")
+Output(8,8,[J](I,6))
+prgmVQPAGE
+If F=0
+Return
+ClrHome
+Output(1,1,"RUNNING SUM / Y")
+Output(2,1,"--------------------------")
+Output(3,1,"RY=PREVIOUS+COMPONENT")
+Output(5,1,"PREV")
+Output(5,8,B)
+Output(6,1,"PLUS")
+Output(6,8,[J](I,2))
+Output(8,1,"TOTAL")
+Output(8,8,[J](I,7))
+prgmVQPAGE
+If F=0
+Return
+End
+X→A
+Y→B
+Else
+[J](L,1)→A
+[J](L,2)→B
+End
+prgmVQMATH
+If L>0
+Then
+ClrHome
+Output(1,1,"POLAR TO COMPONENTS")
+Output(2,1,"--------------------------")
+Output(3,1,"X=R COS(ANGLE)")
+Output(4,1,"Y=R SIN(ANGLE)")
+Output(6,1,"R")
+Output(6,8,[J](L,3))
+Output(7,1,"ANGLE")
+Output(7,8,[J](L,4))
+Output(8,1,"DEGREES CCW FROM +X")
+prgmVQPAGE
+If F=0
+Return
+ClrHome
+Output(1,1,"X = R COS(ANGLE)")
+Output(2,1,"--------------------------")
+Output(4,1,"R")
+Output(4,8,[J](L,3))
+Output(5,1,"ANGLE")
+Output(5,8,[J](L,4))
+Output(8,1,"X =")
+Output(8,8,A)
+prgmVQPAGE
+If F=0
+Return
+ClrHome
+Output(1,1,"Y = R SIN(ANGLE)")
+Output(2,1,"--------------------------")
+Output(4,1,"R")
+Output(4,8,[J](L,3))
+Output(5,1,"ANGLE")
+Output(5,8,[J](L,4))
+Output(8,1,"Y =")
+Output(8,8,B)
+prgmVQPAGE
+If F=0
+Return
+If [J](L,5)=2
+Then
+ClrHome
+Output(1,1,"COMPONENT INPUT")
+Output(2,1,"--------------------------")
+Output(4,1,"X,Y WERE ENTERED.")
+Output(5,1,"R,ANGLE ARE DERIVED.")
+Output(7,1,"POLAR FORM IS A CHECK.")
+prgmVQPAGE
+If F=0
+Return
+End
+End
+ClrHome
+Output(1,1,"MAGNITUDE / WORK")
+Output(2,1,"--------------------------")
+Output(3,1,"R=SQRT(X^2+Y^2)")
+Output(5,1,"X")
+Output(5,8,A)
+Output(6,1,"Y")
+Output(6,8,B)
+Output(8,1,"R =")
+Output(8,8,R)
+prgmVQPAGE
+If F=0
+Return
+If R=0
+Then
+ClrHome
+Output(1,1,"ZERO VECTOR / RESULTANT")
+Output(2,1,"--------------------------")
+Output(4,1,"R = 0")
+Output(6,1,"DIRECTION UNDEFINED")
+Else
+If L=0 and Z=2
+Then
+ClrHome
+Output(1,1,"PRECISION NOTE")
+Output(2,1,"--------------------------")
+Output(4,1,"NEAR CANCELLATION")
+Output(6,1,"ANGLE MAY BE UNRELIABLE")
+Output(8,1,"NONZERO RESULT IS RETAINED")
+prgmVQPAGE
+If F=0
+Return
+End
+ClrHome
+Output(1,1,"DIRECTION / QUADRANT")
+Output(2,1,"--------------------------")
+Output(3,1,"ANGLE=ATAN(Y/X)")
+Output(4,1,"X<0: ADD 180")
+Output(5,1,"IF NEGATIVE: ADD 360")
+Output(7,1,"X=0: 90 NORTH, 270 SOUTH")
+Output(8,1,"ZERO: NO DEFINED ANGLE")
+prgmVQPAGE
+If F=0
+Return
+ClrHome
+Output(1,1,"ANGLE / SUBSTITUTION")
+Output(2,1,"--------------------------")
+Output(3,1,"ATAN(Y/X), THEN FIX QUAD")
+Output(5,1,"Y")
+Output(5,8,B)
+Output(6,1,"X")
+Output(6,8,A)
+Output(8,1,"DEG =")
+Output(8,8,T)
+If A=0
+Output(3,1,"X=0: USE NORTH/SOUTH AXIS")
+prgmVQPAGE
+If F=0
+Return
+ClrHome
+Output(1,1,"DIRECTION DEG CCW")
+Output(2,1,"--------------------------")
+Output(3,1,"COUNTERCLOCKWISE FROM +X")
+Output(4,8,T)
+If T=0
+Output(7,1,"EAST")
+If T=90
+Output(7,1,"NORTH")
+If T=180
+Output(7,1,"WEST")
+If T=270
+Output(7,1,"SOUTH")
+If T>0 and T<90
+Then
+Output(6,8,T)
+Output(7,1,"NORTH OF EAST")
+End
+If T>90 and T<180
+Then
+Output(6,8,180-T)
+Output(7,1,"NORTH OF WEST")
+End
+If T>180 and T<270
+Then
+Output(6,8,T-180)
+Output(7,1,"SOUTH OF WEST")
+End
+If T>270
+Then
+Output(6,8,360-T)
+Output(7,1,"SOUTH OF EAST")
+End
+End
+prgmVQPAGE
+If F=0
+Return
+Menu("WORK COMPLETE","TRIANGLE",TR,"BACK",BK)
+Lbl TR
+3→G
+prgmVQGRAPH
+Lbl BK
+Return

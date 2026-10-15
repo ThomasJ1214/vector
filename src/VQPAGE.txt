@@ -1,0 +1,7 @@
+Output(10,1,"ENTER NEXT / CLEAR BACK")
+0→J
+Repeat J=105 or J=45
+getKey→J
+End
+(J=105)→F
+Return

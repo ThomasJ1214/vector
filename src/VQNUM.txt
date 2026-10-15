@@ -1,0 +1,60 @@
+Lbl IN
+Disp "DECIMAL OR Q TO CANCEL"
+Input Str1
+0→F
+If Str1="Q"
+Return
+If length(Str1)=0 or length(Str1)>18
+Goto ER
+0→V
+1→U
+0→W
+1→J
+1→K
+sub(Str1,1,1)→Str2
+If Str2="-" or Str2="⁻"
+Then
+⁻1→K
+2→J
+End
+If J>length(Str1)
+Goto ER
+If sub(Str1,J,length(Str1)-J+1)="."
+Goto ER
+1→F
+For(J,J,length(Str1))
+If F=1
+Then
+sub(Str1,J,1)→Str2
+If Str2="."
+Then
+If W=1
+0→F
+1→W
+Else
+inString("0123456789",Str2)→Z
+If Z=0
+Then
+0→F
+Else
+If W=0
+Then
+10V+Z-1→V
+Else
+U/10→U
+V+(Z-1)*U→V
+End
+End
+End
+End
+End
+If F=0 or V>10^9
+Goto ER
+If V≠0 and V<10^(⁻9)
+Goto ER
+K*V→V
+1→F
+Return
+Lbl ER
+Disp "INVALID: DECIMAL ONLY","0 OR 1E-9 TO 1E9 ABS","NO EE OR EXPRESSIONS"
+Goto IN

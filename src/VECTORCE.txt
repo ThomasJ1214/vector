@@ -1,0 +1,241 @@
+(sin(90)=1)→θ
+ClrHome
+Output(1,1,"        VECTOR CE")
+Output(2,1,"--------------------------")
+Output(3,1,"2D PHYSICS / 20 VECTORS")
+Output(5,1,"DEGREES CCW FROM +X")
+Output(6,1,"USES MATRIX [J], A-Z,THETA")
+Output(7,1,"AND STR1 / STR2")
+Output(9,1,"ENTER: READ WORKSPACE NOTE")
+Pause
+Menu("USE/ERASE [J]?","CANCEL",EX,"YES START",GO)
+Lbl GO
+{20,7}→dim([J])
+Fill(0,[J])
+0→N
+Degree
+Normal
+Float
+Real
+Lbl MN
+ClrHome
+Menu("VECTOR CE","LIST / EDIT",LI,"ADD VECTOR",AD,"RESULT / WORK",RE,"GRAPHS",GR,"CONTROLS",HE,"QUIT",EX)
+Lbl HE
+ClrHome
+Disp "ANGLE: CCW FROM +X","0 EAST, 90 NORTH","180 WEST, 270 SOUTH","ENTER DECIMAL NUMBERS","Q CANCELS ANY INPUT","ENTER ADVANCES PAGES","GRAPH: CLEAR=BACK","ARROWS STEP LEFT/RIGHT"
+Pause
+ClrHome
+Disp "20 VECTORS MAX","ABS VALUES <= 1E9","NONZERO >= .000000001","NO EXPRESSIONS OR EE","NEGATIVE: (-) KEY","GRAPHS ARE AUTO SCALED","QUIT LOSES SESSION","README: SETTINGS USED"
+Pause
+Goto MN
+Lbl AD
+If N=20
+Then
+ClrHome
+Disp "LIST FULL: EDIT/DELETE"
+Pause
+Goto MN
+End
+N+1→M
+Goto EN
+Lbl LI
+If N=0
+Then
+ClrHome
+Disp "NO VECTORS: ADD FIRST"
+Pause
+Goto MN
+End
+1→I
+Lbl LS
+ClrHome
+Output(1,1,"VECTOR LIST")
+Output(1,14,I)
+Output(1,18,"OF")
+Output(1,22,N)
+Output(2,1,"--------------------------")
+Output(4,1,"X")
+Output(4,8,[J](I,1))
+Output(5,1,"Y")
+Output(5,8,[J](I,2))
+Output(6,1,"MAG")
+Output(6,8,[J](I,3))
+Output(7,1,"DEG")
+If [J](I,3)=0
+Then
+Output(7,8,"UNDEFINED")
+Else
+Output(7,8,[J](I,4))
+End
+Output(9,1,"ENTER: VECTOR OPTIONS")
+Pause
+Menu("VECTOR OPTIONS","NEXT",NX,"PREVIOUS",PV,"EDIT",ED,"DELETE",DE,"WORK / TRIANGLE",IN,"MAIN MENU",MN)
+Lbl NX
+1+remainder(I,N)→I
+Goto LS
+Lbl PV
+I-1→I
+If I<1
+N→I
+Goto LS
+Lbl ED
+I→M
+Goto EN
+Lbl DE
+Menu("DELETE VECTOR?","NO",LS,"YES",DY)
+Lbl DY
+For(K,I,N-1)
+For(J,1,7)
+[J](K+1,J)→[J](K,J)
+End
+End
+N-1→N
+If N=0
+Goto MN
+min(I,N)→I
+Goto LS
+Lbl IN
+I→L
+prgmVQWORK
+Goto LS
+Lbl EN
+Menu("INPUT TYPE","MAG / ANGLE",PO,"X / Y",CA,"CANCEL",MN)
+Lbl PO
+ClrHome
+Disp "MAGNITUDE >= 0"
+prgmVQNUM
+If F=0
+Goto MN
+If V<0
+Goto PO
+V→C
+Menu("DIRECTION STYLE","STANDARD CCW +X",PA,"COMPASS WORDS",PC,"CANCEL",MN)
+Lbl PA
+ClrHome
+Disp "ANGLE IN DEGREES"
+prgmVQNUM
+If F=0
+Goto MN
+V→D
+Goto CV
+Lbl PC
+ClrHome
+Disp "ANGLE 0 TO 90 DEGREES"
+prgmVQNUM
+If F=0
+Goto MN
+If V<0 or V>90
+Goto PC
+V→D
+Menu("MEASURE FROM","NORTH",NB,"SOUTH",SB,"EAST",EB,"WEST",WB,"CANCEL",MN)
+Lbl NB
+Menu("ANGLE OF NORTH","EAST OF NORTH",NE,"WEST OF NORTH",NW,"CANCEL",MN)
+Lbl SB
+Menu("ANGLE OF SOUTH","EAST OF SOUTH",SE,"WEST OF SOUTH",SW,"CANCEL",MN)
+Lbl EB
+Menu("ANGLE OF EAST","NORTH OF EAST",AE,"SOUTH OF EAST",ES,"CANCEL",MN)
+Lbl WB
+Menu("ANGLE OF WEST","NORTH OF WEST",WN,"SOUTH OF WEST",WS,"CANCEL",MN)
+Lbl NE
+90-D→D
+Goto CV
+Lbl NW
+90+D→D
+Goto CV
+Lbl SE
+270+D→D
+Goto CV
+Lbl SW
+270-D→D
+Goto CV
+Lbl AE
+Goto CV
+Lbl ES
+360-D→D
+Goto CV
+Lbl WN
+180-D→D
+Goto CV
+Lbl WS
+180+D→D
+Lbl CV
+D-360floor(D/360)→D
+C*cos(D)→A
+C*sin(D)→B
+If D≥180
+Then
+⁻C*cos(D-180)→A
+⁻C*sin(D-180)→B
+End
+If D=0 or D=180
+0→B
+If D=90 or D=270
+0→A
+1→E
+Goto SV
+Lbl CA
+ClrHome
+Disp "HORIZONTAL X"
+prgmVQNUM
+If F=0
+Goto MN
+V→C
+ClrHome
+Disp "VERTICAL Y"
+prgmVQNUM
+If F=0
+Goto MN
+C→A
+V→B
+prgmVQMATH
+R→C
+T→D
+2→E
+Lbl SV
+A→[J](M,1)
+B→[J](M,2)
+C→[J](M,3)
+D→[J](M,4)
+E→[J](M,5)
+max(N,M)→N
+Goto MN
+Lbl RE
+If N=0
+Goto LI
+prgmVQSUM
+0→L
+prgmVQWORK
+Goto MN
+Lbl GR
+If N=0
+Goto LI
+Menu("GRAPHS","HEAD TO TAIL",HT,"COMMON ORIGIN",CO,"INSPECT TRIANGLE",TR,"STEP THROUGH",ST,"BACK",MN)
+Lbl HT
+1→G
+prgmVQGRAPH
+Goto GR
+Lbl CO
+2→G
+prgmVQGRAPH
+Goto GR
+Lbl ST
+4→G
+prgmVQGRAPH
+Goto GR
+Lbl TR
+ClrHome
+Disp "VECTOR 1 TO N","0 FOR RESULTANT","COUNT",N
+prgmVQNUM
+If F=0
+Goto GR
+If V<0 or V>N or V≠int(V)
+Goto TR
+V→L
+prgmVQWORK
+Goto GR
+Lbl EX
+If θ=0
+Radian
+ClrHome
+Disp "DONE. [J] RETAINED.","BACKUP BEFORE NEXT RUN.","SEE README TO RESTORE","YOUR MODES AND WINDOW."
+Stop

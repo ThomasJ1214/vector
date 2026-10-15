@@ -1,0 +1,10 @@
+*.txt text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.js text eol=lf
+*.cjs text eol=lf
+*.html text eol=lf
+*.svg text eol=lf
+*.8xp -text
+*.png -text
+*.zip -text

@@ -1,0 +1,139 @@
+prgmVQSUM
+0→S
+For(K,1,N)
+max(S,abs([J](K,1)))→S
+max(S,abs([J](K,2)))→S
+max(S,abs([J](K,6)))→S
+max(S,abs([J](K,7)))→S
+End
+If G=3
+Then
+If L=0
+Then
+max(abs(X),abs(Y))→S
+Else
+max(abs([J](L,1)),abs([J](L,2)))→S
+End
+End
+If S=0
+1→S
+1.75S→S
+Full
+Func
+FnOff
+PlotsOff
+AxesOff
+GridOff
+CoordOff
+ExprOff
+BackgroundOff
+⁻S→Ymin
+S→Ymax
+⁻S*264/164→Xmin
+S*264/164→Xmax
+S→Xscl
+S→Yscl
+1→Xres
+0→M
+If G≠4
+N→M
+Lbl RD
+ClrDraw
+Line(⁻1.5S,0,1.5S,0,23)
+Line(0,⁻.66S,0,.66S,23)
+Line(Xmin,.71S,Xmax,.71S,23)
+Line(Xmin,⁻.66S,Xmax,⁻.66S,23)
+TextColor(12)
+Text(74,250,"+X")
+Text(26,135,"+Y")
+If G=3
+Then
+If L=0
+Then
+X→C
+Y→D
+Else
+[J](L,1)→C
+[J](L,2)→D
+End
+C→A
+D→B
+prgmVQMATH
+Line(0,0,C,0,14)
+Line(C,0,C,D,15)
+0→A
+0→B
+10→E
+prgmVQARROW
+Text(139,4,"GREEN X / ORANGE Y / BLUE R")
+Text(2,4,"TRIANGLE ",L,"  (0=RESULT)")
+Text(2,218,"CLEAR BACK")
+Text(151,4,"X=",C,"  Y=",D)
+If R>0
+Text(13,4,"R=",R,"  DEG CCW=",T)
+If R=0
+Text(13,4,"ZERO: DIRECTION UNDEFINED")
+Else
+For(K,1,M)
+0→A
+0→B
+[J](K,1)→C
+[J](K,2)→D
+If G≠2
+Then
+If K>1
+Then
+[J](K-1,6)→A
+[J](K-1,7)→B
+End
+[J](K,6)→C
+[J](K,7)→D
+End
+10→E
+prgmVQARROW
+TextColor(10)
+Text(max(33,min(125,int(164*(Ymax-D)/(2S)))),max(0,min(235,int(264*(C-Xmin)/(Xmax-Xmin)))),K)
+End
+0→A
+0→B
+0→C
+0→D
+If M>0
+Then
+[J](M,6)→C
+[J](M,7)→D
+End
+11→E
+prgmVQARROW
+TextColor(11)
+If G=1
+Text(2,4,"HEAD TO TAIL")
+If G=2
+Text(2,4,"COMMON ORIGIN")
+If G=4
+Text(2,4,"STEP ",M," / ",N)
+TextColor(12)
+Text(2,218,"CLEAR BACK")
+Text(13,4,"VECTORS: ",M,"   DEGREES CCW FROM +X")
+TextColor(12)
+Text(139,4,"BLUE: VECTORS    RED: RESULTANT")
+If G=4
+Text(151,4,"LEFT: BACK   RIGHT/ENTER: ADD")
+End
+Lbl KY
+getKey→J
+If J=45
+Return
+If G≠4
+Goto KY
+If J=24 and M>0
+Then
+M-1→M
+Goto RD
+End
+If (J=26 or J=105) and M<N
+Then
+M+1→M
+Goto RD
+End
+Goto KY
