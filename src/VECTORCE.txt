@@ -1,6 +1,6 @@
 (sin(90)=1)→θ
 ClrHome
-Output(1,1,"        VECTOR CE")
+Output(1,1,"       VECTOR CE R2")
 Output(2,1,"--------------------------")
 Output(3,1,"2D PHYSICS / 20 VECTORS")
 Output(5,1,"DEGREES CCW FROM +X")
@@ -69,11 +69,11 @@ Output(7,8,[J](I,4))
 End
 Output(9,1,"ENTER: VECTOR OPTIONS")
 Pause
-Menu("VECTOR OPTIONS","SHOW WORK",IN,"TRIANGLE",VT,"EDIT",ED,"DELETE",DE,"NEXT",NX,"PREVIOUS",PV,"MAIN MENU",MN)
+Menu("VECTOR OPTIONS","SHOW WORK",IN,"TRIANGLE",VT,"EDIT",ED,"DELETE",DE,"NEXT",NX,"PREVIOUS",P1,"MAIN MENU",MN)
 Lbl NX
 1+remainder(I,N)→I
 Goto LS
-Lbl PV
+Lbl P1
 I-1→I
 If I<1
 N→I

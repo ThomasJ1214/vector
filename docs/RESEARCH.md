@@ -32,3 +32,7 @@ A later audit of the actual shipped bytes found a tokenizer spelling issue in ti
 The original angle normalization used `floor(`, which is not a TI-BASIC function. It now uses `int(` (B1), defined by the pinned ClrHome catalog as the largest integer less than or equal to its argument. `iPart(` instead truncates toward zero; the source harness was corrected to distinguish these functions. Negative angle-wrap checks pass with the supported function.
 
 All used commands have token minimum-version metadata compatible with TI-84 Plus CE OS 5.8. The build checks numeric version components for the CE model, including the distinction between 5.8 and 5.10. This confirms command availability and repaired encoding, not execution on a 5.8 calculator or emulator.
+
+## Identifier context / Finance PV collision
+
+The token sheets identify `63 2D` as the Finance variable `PV`. The first tokenizer audit missed it because it is a valid uppercase system-variable token, while TI-BASIC label operands require one or two individual label characters. A native label search crosses this malformed label on the Add Vector route. R2 renames it P1 and validates actual bytes for every Lbl, Goto, Menu destination and program call. Expression and statement grammar checks supplement availability/checksum checks. This repairs a definite invalid label; the runtime route remains subject to testing on the user's calculator.

@@ -18,9 +18,9 @@ The two-minute video shows entry, review, vector addition, graph modes, triangle
 
 The browser version is a companion for trying the workflow. The eight `.8xp` programs are the calculator product. JavaScript uses binary64 arithmetic; TI-BASIC uses the calculator's own numeric precision.
 
-## OS 5.8 startup syntax-error fix
+## OS 5.8 syntax repairs / R2
 
-If an earlier download gives **ERR:SYNTAX immediately after launch**, use the [rebuilt OS 5.8 package](dist/VECTORCE-OS58.zip). Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM** and run VECTORCE from PRGM. The old build incorrectly encoded Pause, FnOff and PlotsOff as letters; the rebuild uses their real command tokens. Polar input also now uses TI-BASIC `int(` for angle normalization. The build audits the actual saved tokens against CE OS 5.8 metadata, in addition to checksums. Hardware/emulator execution on OS 5.8 has not been performed here.
+If an earlier download gives **ERR:SYNTAX at launch or on Add Vector**, use the [rebuilt OS 5.8 R2 package](dist/VECTORCE-OS58-r2.zip). Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM** and run VECTORCE from PRGM. The startup banner should read **VECTOR CE R2**. The old build incorrectly encoded Pause, FnOff and PlotsOff as letters; the rebuild uses their real command tokens. Polar input also now uses TI-BASIC `int(` for angle normalization. R2 also repairs a label that was encoded as the Finance variable PV instead of two label characters. The build now checks identifiers, jump/menu targets, program calls, expression grammar, function arguments, assignments and control blocks in all eight files, alongside CE OS 5.8 token metadata and checksums. Hardware/emulator execution on OS 5.8 has not been performed here.
 
 ## Transfer and run (no computer Python needed)
 

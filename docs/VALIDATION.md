@@ -6,7 +6,7 @@
 - Generated all eight unprotected `.8xp` files from complete TI-BASIC source using the CE token table, with tokenization warnings treated as failures.
 - Checked each TI container signature, declared length and 16-bit payload checksum.
 - Detokenized and retokenized each generated program and compared token bytes.
-- Ran **48 automated tests**, covering source behavior and actual calculator tokens, including many data cases, via `python -m unittest discover -s tests -v`.
+- Ran **64 automated tests**, covering source behavior, actual calculator tokens, and static instruction syntax, including many data cases, via `python -m unittest discover -s tests -v`.
 - Checked internal labels for uniqueness/length, branch destinations and helper file presence.
 
 The custom test harness reads the actual `.txt` source, follows menus/branches/loops/calls, parses decimal input, and executes arithmetic with Python binary64. The expanded harness also evaluates drawing coordinates, text and window settings, checks matrix indices and screen rows/columns, and tracks degree/radian mode. It records drawing/display commands; the separate preview generator renders approximate layouts from those commands, without emulating the TI display. It is **not a TI calculator emulator**, does not use TI's BCD arithmetic, and cannot establish that every TI OS parser/layout/keyboard behavior is correct. Generated-file checks establish token/container integrity, not successful calculator execution.
@@ -82,3 +82,11 @@ Ten new source-level tests cover immediate answers without work pages, short wor
 The earlier tests were insufficient: the source harness treated Pause/FnOff/PlotsOff as commands, but the generated binaries contained ordinary letters. Even detokenization/retokenization reproduced those invalid executable sequences, so the round trip passed. The first bad Pause occurred immediately after the splash. The audit also found unsupported `floor(` in polar-angle conversion.
 
 The corrected build emits D8 for all six Pause sites, 97 for FnOff, EA for PlotsOff, and B1 for `int(` normalization. Tests now examine exact opcodes in saved `.8xp` files, reject old letter encodings even when their round trips pass, allow ordinary text within strings, verify TI int/iPart semantics, and check numeric OS version ordering. Every generated file passes the CE OS 5.8 token-availability check and its checksum/round-trip checks. All 48 automated tests pass. The named OS58 ZIP and standard ZIP contain the same rebuilt files. Native OS 5.8 execution remains untested here.
+
+## R2 Add Vector syntax repair and whole-project static audit
+
+The remaining bad label was `PV`: the tokenizer selected the Finance present-value token `63 2D`, rather than the two label letters. Both `Lbl PV` and the PREVIOUS menu destination contained that token. This malformed label lies in the source area searched when Add Vector jumps to its input menu, matching the reported immediate failure. It was renamed to `P1`, and the saved binary now contains `D6 50 31` for the label and `50 31` for the menu destination. R2 is identified on the startup screen.
+
+`tools/ti_syntax.py` now statically audits all **779 statements across eight saved programs**. It validates the actual label/program-name character bytes, all jump and menu destinations, menu pair counts, called-program presence, command/function argument counts, expression operands and delimiters, scalar/string/matrix targets and types, and balanced conditional/loop blocks. Sixteen added regression tests reject the old Finance-token label and malformed expressions, stores, loops, matrices, calls and command arguments. All 64 tests pass.
+
+This validator is explicitly for the instruction subset used by this project. It is not TI's firmware parser and does not establish hardware/emulator execution. The two independent read-only audits and new static checks found no other current-project syntax defect. The standard, OS58 and OS58-r2 ZIPs contain identical current binaries.

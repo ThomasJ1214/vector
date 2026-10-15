@@ -6,6 +6,10 @@ from pathlib import Path
 import warnings
 from tivars import TIProgram
 from tivars.models import TI_84PCE
+try:
+    from tools.ti_syntax import audit_program
+except ModuleNotFoundError:
+    from ti_syntax import audit_program
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET_OS = TI_84PCE.OS('5.8')
@@ -84,8 +88,10 @@ def validate_tokens(program, name='UNNAMED'):
 def build():
     out = ROOT / 'dist'
     out.mkdir(exist_ok=True)
+    available = {p.stem for p in (ROOT / 'src').glob('*.txt')}
     for src in sorted((ROOT / 'src').glob('*.txt')):
         program = tokenize_source(src.read_text(encoding='utf-8'), src.stem)
+        audit_program(program, src.stem, available)
         target = out / (src.stem + '.8xp')
         program.save(str(target), model=TI_84PCE)
         raw = target.read_bytes()
@@ -96,11 +102,12 @@ def build():
         # Audit the actual saved program too, rather than the source alone.
         saved = TIProgram.open(str(target))
         validate_tokens(saved, src.stem)
+        audit = audit_program(saved, src.stem, available)
         assert bytes(saved.data) == bytes(program.data)
         q = TIProgram()
         q.load_string(saved.string(model=TI_84PCE), model=TI_84PCE)
         assert bytes(q.data) == bytes(program.data)
-        print(f'{target.name}: {len(raw)} bytes; OS 5.8 token audit, checksum and round trip OK')
+        print(f'{target.name}: {len(raw)} bytes; {audit["statements"]} lines syntax-audited; OS 5.8 tokens and checksum OK')
 
 
 if __name__ == '__main__':
