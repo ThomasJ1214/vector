@@ -11,7 +11,7 @@ from threading import Thread
 from zipfile import ZipFile, ZIP_DEFLATED
 from html import escape
 from playwright.sync_api import sync_playwright
-from preview import screen, text
+from preview import screen, text, home_page
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tests'))
 from basic_harness import Machine
@@ -60,18 +60,18 @@ def build_scenes():
     m=main_machine(['CANCEL'])
     scene('Welcome to Vector CE','Native TI-BASIC workflow for TI-84 Plus CE and CE Python.','PRGM / VECTORCE / ENTER',m,commands=m.pages[0],duration=4)
     menu('USE/ERASE [J]?','YES START','Choose the session workspace','Back up matrix [J] and the documented variables before starting.')
-    menu('VECTOR CE','ADD VECTOR','Start with an empty vector list','Vectors are loaded only when you enter them. There are no default vectors.')
+    menu('VECTRA CE','ADD VECTOR','Start with an empty vector list','Vectors are loaded only when you enter them. There are no default vectors.')
     menu('INPUT TYPE','MAG / ANGLE','Vector 1 / polar input','First enter 3 units pointing along the positive x-axis.')
     enter('MAGNITUDE >= 0','3','The magnitude uses your chosen consistent units.')
     menu('DIRECTION STYLE','STANDARD CCW +X','Choose a direction convention','Standard angles are measured counterclockwise from +x.')
     enter('ANGLE IN DEGREES','0','Zero degrees points east or to the right.')
     m=main_machine(['YES START','ADD VECTOR','MAG / ANGLE','STANDARD CCW +X','VECTORS','MAIN MENU','QUIT'],[3,0])
-    scene('Review vector 1','The calculator stores x=3, y=0 and magnitude 3.','ENTER: vector options',m,commands=m.pages[1])
+    scene('Review vector 1','The calculator stores x=3, y=0 and magnitude 3.','ENTER: vector options',m,commands=home_page(m,'VECTOR LIST'))
     menu('INPUT TYPE','X / Y','Vector 2 / component input','Mix input types: add an upward vector using its components.')
     enter('HORIZONTAL X','0','The second vector has no horizontal component.')
     enter('VERTICAL Y','4','Its positive vertical component points north or up.')
     m=main_machine(['YES START','ADD VECTOR','X / Y','ADD VECTOR','X / Y','VECTORS','NEXT','MAIN MENU','QUIT'],[3,0,0,4])
-    scene('Review vector 2','The second vector is 4 units at 90 degrees.','ENTER: vector options',m,commands=m.pages[2])
+    scene('Review vector 2','The second vector is 4 units at 90 degrees.','ENTER: vector options',m,commands=home_page(m,'VECTOR LIST',1))
     menu('GRAPHS','HEAD TO TAIL','Choose a graph view','Head-to-tail shows the actual order of addition.')
     graph([(3,0),(0,4)],1,0,'Head to tail / 3 plus 4','Blue arrows add in sequence. Red joins the origin to the final endpoint.')
     graph([(3,0),(0,4)],2,0,'Compare at a common origin','The same two vectors are drawn from one starting point.')
@@ -88,7 +88,7 @@ def build_scenes():
     menu('ANGLE OF NORTH','EAST OF NORTH','Turn toward east','30 degrees east of north converts to 60 degrees CCW from +x.')
     m=main_machine(['YES START','ADD VECTOR','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH','VECTORS','MAIN MENU','QUIT'],[24,30])
     assert abs(m.m[0][0]-12)<1e-10
-    scene('Review a compass vector','x=12; y is approximately 20.78460969; magnitude=24.','ENTER: options',m,commands=m.pages[1],duration=4)
+    scene('Review a compass vector','x=12; y is approximately 20.78460969; magnitude=24.','ENTER: options',m,commands=home_page(m,'VECTOR LIST'),duration=4)
     graph([(-3,4)],3,1,'Negative components / quadrant II','A negative x component points west. The direction is 126.86989765 degrees.')
     m=vector_machine([(3,0),(-3,0)]);m.v['L']=0;m.keys.extend([105]*9);m.menus.extend(['FULL WORK','BACK']);m.run('VQWORK')
     assert m.v['R']==0
@@ -97,7 +97,8 @@ def build_scenes():
     menu('VECTOR OPTIONS','EDIT','Edit without restarting','An edit replaces the selected vector only after all values are valid.')
     menu('DELETE VECTOR?','YES','Delete with confirmation','Delete shifts the remaining vectors while keeping their order.')
     m=main_machine(['YES START','HELP','QUIT'])
-    scene('Controls are always available','Return to the main menu to review conventions and input limits.','ENTER / main menu',m,commands=m.pages[1])
+    help_page=next(page for page in m.pages if ('Disp','ANGLE: CCW FROM +X') in page)
+    scene('Controls are always available','Return to the main menu to review conventions and input limits.','ENTER / main menu',m,commands=help_page)
 
 def svg_for(item,index,total):
     return ''.join(['<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">','<rect width="1280" height="720" fill="#f4f5ed"/>',text(46,40,'VECTOR CE / CALCULATOR WALKTHROUGH',size=19),text(1115,40,f'{index:02d} / {total:02d}',size=19),'<rect x="192" y="70" width="896" height="548" rx="20" fill="#25352f"/>',f'<svg x="216" y="80" width="848" height="528" viewBox="0 0 265 165">{item["body"]}</svg>',text(46,650,item['title'],size=23),text(46,678,item['caption'],size=17),text(46,707,'SOURCE-LAYOUT SIMULATION / APPROXIMATE FONTS / NOT HARDWARE OR EMULATOR FOOTAGE',size=13),text(1110,97,'KEY / ACTION',size=11),text(1110,119,item['key'][:20],size=11),'</svg>'])

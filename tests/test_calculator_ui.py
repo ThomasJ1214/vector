@@ -3,6 +3,25 @@ import unittest
 from basic_harness import Machine
 
 class CalculatorUI(unittest.TestCase):
+    def test_splash_initializes_an_empty_session_after_consent(self):
+        m=Machine(['YES START','QUIT'])
+        m.m[0][:5]=[3,4,5,53,2]
+        m.v['N']=1
+        m.run('VECTORCE')
+        self.assertEqual(m.v['N'],0)
+        self.assertTrue(all(value==0 for row in m.m for value in row))
+        splash=m.paused_graphs[1]
+        self.assertTrue(any(cmd[0]=='Text' and cmd[2]==-1 and cmd[-1]=='VECTRA CE' for cmd in splash))
+        self.assertTrue(any(cmd[0]=='Text' and cmd[-1]=='READY / ENTER TO BEGIN' for cmd in splash))
+
+    def test_cancel_before_splash_keeps_workspace_and_graph_untouched(self):
+        m=Machine(['CANCEL'])
+        m.m[0][0]=123
+        m.run('VECTORCE')
+        self.assertEqual(m.m[0][0],123)
+        self.assertEqual(m.graph,[])
+        self.assertEqual(m.v['Xmax'],0)
+
     def run_app(self,tail,keys=(),xy=(3,4)):
         m=Machine(['YES START','ADD VECTOR','X / Y',*tail,'QUIT'],map(str,xy),keys)
         m.run('VECTORCE')

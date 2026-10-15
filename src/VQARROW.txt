@@ -2,7 +2,7 @@ Line(A,B,C,D,E)
 √((C-A)^2+(D-B)^2)→H
 If H=0
 Return
-min(.055S,.25H)→O
+min(6S,.25H)→O
 (C-A)/H→P
 (D-B)/H→Q
 Line(C,D,C-O*P+.45O*Q,D-O*Q-.45O*P,E)

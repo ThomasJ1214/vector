@@ -5,9 +5,13 @@ import sys
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'tests'))
 from basic_harness import Machine
-COLORS={10:'#3264b7',11:'#c4483b',12:'#182922',14:'#408756',15:'#c88335',23:'#bcc8bc'}
+COLORS={10:'#3264b7',11:'#c4483b',12:'#182922',14:'#408756',15:'#c88335',17:'#1c315c',20:'#ffffff',23:'#bcc8bc'}
 def number(x):return format(x,'.10g') if isinstance(x,(int,float)) else str(x)
-def text(x,y,s,color='#182922',size=5):return f'<text xml:space="preserve" x="{x}" y="{y}" fill="{color}" font-size="{size}" font-family="monospace">{escape(s)}</text>'
+def text(x,y,s,color='#182922',size=6.5):return f'<text xml:space="preserve" x="{x}" y="{y}" fill="{color}" font-size="{size}" font-family="monospace">{escape(s)}</text>'
+
+def home_page(m,title,occurrence=0):
+    pages=[page for page in m.pages if any(cmd[0]=='Output' and cmd[1:3]==(1.,1.) and cmd[3]==title for cmd in page)]
+    return pages[occurrence]
 def home_screen(commands):
     cells=[[' ']*26 for _ in range(10)]
     cursor=0
@@ -34,24 +38,29 @@ def screen(m,graph,commands=None):
                 _,x1,y1,x2,y2,c=command
                 pieces.append(f'<line x1="{X(x1)}" y1="{Y(y1)}" x2="{X(x2)}" y2="{Y(y2)}" stroke="{COLORS[c]}" stroke-width=".8"/>')
             else:
-                _,c,y,x,*values=command
-                pieces.append(text(x,y+5,''.join(map(number,values)),COLORS[c]))
+                _,c,*args=command
+                large=args[0]==-1
+                y,x,*values=args[1:] if large else args
+                pieces.append(text(x,y+(14 if large else 6),''.join(map(number,values)),COLORS[c],size=15.5 if large else 6.5))
     else:
-        pieces.append(home_screen(m.pages[1] if commands is None else commands))
+        pieces.append(home_screen(home_page(m,'VECTOR LIST') if commands is None else commands))
     return ''.join(pieces)
 def main():
     scenes=[]
-    m=Machine(['YES START','ADD VECTOR','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH','VECTORS','MAIN MENU','QUIT'],['24','30']);m.run('VECTORCE')
-    scenes.append(('Review your vector',screen(m,False)))
-    for mode,label in [(1,'Head to tail'),(3,'Inspect a component triangle')]:
+    m=Machine(['YES START','QUIT']);m.run('VECTORCE')
+    scenes.append(('A new name and startup screen',screen(m,True,m.paused_graphs[1])))
+    for mode,label,vectors in [(1,'Fit to the complete addition',[(10,0),(0,4)]),(2,'Compare from a common origin',[(6,2),(-3,4),(1,-3)]),(3,'Inspect one component triangle',[(6,4)])]:
         m=Machine(keys=[45]);m.v.update(N=2,G=mode,L=0)
-        m.m[0][:5]=[3,0,3,0,2];m.m[1][:5]=[0,4,4,90,2];m.run('VQGRAPH')
+        m.v['N']=len(vectors)
+        for i,(x,y) in enumerate(vectors):m.m[i][:5]=[x,y,(x*x+y*y)**.5,0,2]
+        m.run('VQGRAPH')
         scenes.append((label,screen(m,True)))
-    out=['<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="355" viewBox="0 0 1100 355"><rect width="1100" height="355" fill="#f4f5ed"/>',text(32,33,'VECTOR CE / CALCULATOR LAYOUT',size=18)]
+    out=['<svg xmlns="http://www.w3.org/2000/svg" width="1120" height="820" viewBox="0 0 1120 820"><rect width="1120" height="820" fill="#f4f5ed"/>',text(32,34,'VECTRA CE / NATIVE CALCULATOR',size=20)]
     for i,(label,body) in enumerate(scenes):
-        x=32+i*358
-        out.extend([text(x,68,label,size=13),f'<rect x="{x}" y="85" width="320" height="216" rx="14" fill="#25352f"/>',f'<svg x="{x+14}" y="99" width="292" height="188" viewBox="0 0 265 165">{body}</svg>'])
-    out.extend([text(32,333,'Source-layout preview. Fonts approximate; not a photograph or a calculator-emulator capture.',size=12),'</svg>'])
+        x=32+(i%2)*550
+        y=80+(i//2)*355
+        out.extend([text(x,y-12,label,size=14),f'<rect x="{x}" y="{y}" width="506" height="320" rx="14" fill="#25352f"/>',f'<svg x="{x+14}" y="{y+14}" width="478" height="292" viewBox="0 0 265 165">{body}</svg>'])
+    out.extend([text(32,799,'Source-layout preview. Fonts approximate; not a photograph or a calculator-emulator capture.',size=12),'</svg>'])
     (ROOT/'docs/calculator-preview.svg').write_text(''.join(out),encoding='utf-8')
     print('Calculator source-layout preview generated')
 if __name__=='__main__':main()

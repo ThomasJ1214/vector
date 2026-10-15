@@ -37,11 +37,11 @@ TI-BASIC has global variables; do not call helpers directly or interrupt a sessi
 | N | active vector count |
 | O,P,Q | arrowhead size/direction |
 | R,T | computed magnitude and standard angle |
-| S | graph half-height after margin |
-| U,V | decimal parser factor/value |
-| W | parser flag or sum of magnitudes |
+| S | graph units per logical pixel, after margin (same on x and y) |
+| U,V | decimal parser factor/value; graph minimum/maximum x |
+| W | parser flag, sum of magnitudes, or graph minimum y |
 | X,Y | total components |
-| Z | parser digit index or cancellation flag: 0 ordinary, 1 exact zero, 2 near cancellation |
+| Z | parser digit index; cancellation flag: 0 ordinary, 1 exact zero, 2 near cancellation; graph maximum y |
 | θ | original angle-mode flag: 1 degrees, 0 radians |
 | Str1,Str2 | input text and single-character scratch |
 
@@ -49,6 +49,8 @@ TI-BASIC has global variables; do not call helpers directly or interrupt a sessi
 
 Startup records degree/radian mode by testing sin(90), then sets Degree, Normal, Float, Real. QUIT/CANCEL restore radians if it was originally active; degree mode otherwise remains active. θ must not be altered during execution.
 
-Graphing sets Full/Func, FnOff, PlotsOff, AxesOff, GridOff, CoordOff, ExprOff, BackgroundOff, the x/y window bounds and scales, Xres=1, and TextColor. These settings are not restored. No equations are erased, and stat list data is unchanged. The graph drawing buffer and home screen are cleared. Previous drawings are not retained. No StoreGDB/StorePic is used, to avoid overwriting users' graph databases/pictures.
+The loading screen after YES START and graphing set Full/Func, FnOff, PlotsOff, AxesOff, GridOff, CoordOff, ExprOff, BackgroundOff, the x/y window bounds and scales, Xres=1, and TextColor. These settings are not restored. CANCEL before initialization leaves graph settings untouched. No equations are erased, and stat list data is unchanged. The graph drawing buffer and home screen are cleared. Previous drawings are not retained. No StoreGDB/StorePic is used, to avoid overwriting users' graph databases/pictures.
+
+Graphs reuse U,V,W,Z only after refreshing totals with VQSUM. Results/work refresh those totals and cancellation flags before showing them. Step-through fits the complete path once and leaves its window unchanged during additions/undo. The launcher remains VECTORCE; VECTRA CE is the display name, with the same eight program filenames.
 
 Restore your recorded settings with MODE, WINDOW, Y=, 2nd Y= and FORMAT after quitting. A break/error can prevent normal angle restoration; set Degree/Radian in MODE manually in that case. The in-program notice and README disclose these effects.

@@ -61,6 +61,10 @@ class CalculatorTokens(unittest.TestCase):
             for line,data in zip(source,encoded):
                 if line in BARE_COMMANDS:
                     self.assertEqual(data,BARE_COMMANDS[line]);count+=1
-            self.assertEqual(count,6 if name=='VECTORCE' else 2)
+            self.assertEqual(count,9 if name=='VECTORCE' else 2)
+
+    def test_large_splash_text_uses_negation_and_text_opcodes(self):
+        p=tokenize_source('Text(⁻1,80,82,"VECTRA CE")','TEST')
+        self.assertTrue(bytes(p.data).startswith(b'\x93\xb0\x31\x2b'))
 
 if __name__=='__main__':unittest.main()

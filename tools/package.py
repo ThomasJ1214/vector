@@ -20,7 +20,7 @@ def package():
             info.compress_type = ZIP_DEFLATED
             info.external_attr = 0o644 << 16
             z.writestr(info, p.read_bytes())
-    for alias in ('VECTORCE-OS58.zip', 'VECTORCE-OS58-r2.zip'):
+    for alias in ('VECTORCE-OS58.zip', 'VECTRA-CE-OS58.zip'):
         (out / alias).write_bytes(target.read_bytes())
     print(f'{target.name}: {len(included)} files, {target.stat().st_size} bytes')
 

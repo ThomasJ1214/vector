@@ -88,7 +88,10 @@ class Scenarios(unittest.TestCase):
     def test_triangle_rescales_independently(self):
         m=Machine(keys=[45]);m.v.update(N=2,G=3,L=2)
         m.m[0][:3]=[1e9,0,1e9];m.m[1][:3]=[0,1e-9,1e-9]
-        m.run('VQGRAPH');self.assertTrue(math.isclose(m.v['S'],1.75e-9))
+        m.run('VQGRAPH')
+        pixels=1e-9/(m.v['Ymax']-m.v['Ymin'])*164
+        self.assertGreater(pixels,80)
+        self.assertLess(pixels,98)
 
     def test_step_limits_and_irrelevant_keys(self):
         m=Machine(keys=[24,24,9,26,26,26,105,24,24,24,45]);m.v.update(N=2,G=4,L=0)

@@ -26,6 +26,7 @@ class Machine:
         self.frames = []
         self.home = []
         self.pages = []
+        self.paused_graphs = []
         self.text_color = 12
         self.v.update(dict.fromkeys(("Xmin","Xmax","Ymin","Ymax","Xscl","Yscl","Xres"),0.))
 
@@ -163,7 +164,9 @@ class Machine:
             elif s in ('Degree','Radian'): self.angle=s
             elif s=='ClrHome': self.home=[]
             elif s=='ClrDraw': self.graph=[]
-            elif s=='Pause': self.pages.append(list(self.home))
+            elif s=='Pause':
+                self.pages.append(list(self.home))
+                self.paused_graphs.append(list(self.graph))
             elif s.startswith('Disp '):
                 self.output.append(s)
                 for value in self.split(s[5:]): self.home.append(('Disp',self.expr(value)))
@@ -175,7 +178,8 @@ class Machine:
             elif s.startswith('TextColor('): self.text_color=self.expr(s[10:-1])
             elif s.startswith('Text('):
                 args=list(map(self.expr,self.split(s[5:-1])))
-                assert 0<=args[0]<=158 and 0<=args[1]<=264, (s,args)
+                coords=args[1:] if args[0]==-1 else args
+                assert len(coords)>=3 and 0<=coords[0]<=158 and 0<=coords[1]<=264, (s,args)
                 self.graph.append(('Text',self.text_color,*args))
                 self.output.append(s)
             elif s.startswith('Line('):

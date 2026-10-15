@@ -33,6 +33,12 @@ class NativeSyntax(unittest.TestCase):
             with self.subTest(source=source):
                 with self.assertRaises(ValueError):self.parse(source)
 
+    def test_large_text_requires_row_column_and_contents(self):
+        self.parse('Text(⁻1,80,87,"VECTRA CE")')
+        for source in ['Text(⁻1,80,"BAD","X")','Text(⁻1,80,87)']:
+            with self.subTest(source=source):
+                with self.assertRaises(ValueError):self.parse(source)
+
     def test_incomplete_and_malformed_expressions(self):
         for source in ['1+→A','If 1=','sin(1+)→A','(1+2→A','1..2→A','-1→A']:
             with self.subTest(source=source):
@@ -92,6 +98,6 @@ class NativeSyntax(unittest.TestCase):
             source=(ROOT/'src'/f'{path.stem}.txt').read_text(encoding='utf-8')
             self.assertEqual(report['statements'],len([s for s in source.splitlines() if s]))
             count+=report['statements']
-        self.assertEqual(count,779)
+        self.assertEqual(count,863)
 
 if __name__=='__main__':unittest.main()

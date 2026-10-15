@@ -1,4 +1,4 @@
-# VECTOR CE — 2D vectors on the calculator
+# VECTRA CE — 2D vectors on the calculator
 
 A native, unprotected **TI-BASIC** program for the **TI-84 Plus CE** and **TI-84 Plus CE Python**. The Python edition runs this in its normal PRGM menu; it does **not** use the calculator's Python app, assembly, shells, or jailbreaks. Supports up to 20 mixed polar/component vectors per session.
 
@@ -18,18 +18,22 @@ The two-minute video shows entry, review, vector addition, graph modes, triangle
 
 The browser version is a companion for trying the workflow. The eight `.8xp` programs are the calculator product. JavaScript uses binary64 arithmetic; TI-BASIC uses the calculator's own numeric precision.
 
-## OS 5.8 syntax repairs / R2
+## VECTRA CE / R3 calculator update
 
-If an earlier download gives **ERR:SYNTAX at launch or on Add Vector**, use the [rebuilt OS 5.8 R2 package](dist/VECTORCE-OS58-r2.zip). Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM** and run VECTORCE from PRGM. The startup banner should read **VECTOR CE R2**. The old build incorrectly encoded Pause, FnOff and PlotsOff as letters; the rebuild uses their real command tokens. Polar input also now uses TI-BASIC `int(` for angle normalization. R2 also repairs a label that was encoded as the Finance variable PV instead of two label characters. The build now checks identifiers, jump/menu targets, program calls, expression grammar, function arguments, assignments and control blocks in all eight files, alongside CE OS 5.8 token metadata and checksums. Hardware/emulator execution on OS 5.8 has not been performed here.
+Download [VECTRA CE for OS 5.8](dist/VECTRA-CE-OS58.zip). Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM**. Keep launching **VECTORCE** from PRGM. The workspace notice identifies **VECTRA CE R3**, followed by a vector-logo loading screen after YES START; press ENTER when ready. New sessions still start empty.
+
+Graphs now fit and center the actual endpoints in each view, with equal horizontal and vertical unit scales. This makes the vectors larger without distorting angles. Common-origin uses its own bounds, individual/resultant triangles get independent close-ups, and step-through keeps a steady window for the complete path. Navy titles, blue dividers, color-coded legends, and separate component readouts keep the plot clear.
+
+R3 retains the OS 5.8 syntax repairs: correct Pause/FnOff/PlotsOff command tokens, supported `int(` angle normalization, and the P1 label repair. Every saved program passes the token and instruction-grammar audit. The earlier [R2 package](dist/VECTORCE-OS58-r2.zip) is retained as the previous build. The browser companion and earlier walkthrough video retain their earlier appearance. No hardware/emulator execution of R3 has been performed here.
 
 ## Transfer and run (no computer Python needed)
 
 1. Install **TI Connect CE** for your computer from [Texas Instruments](https://education.ti.com/en/products/computer-software/ti-connect-ce-sw). Use TI Connect **CE**, not the older TI Connect application.
 2. Back up your calculator with TI Connect CE first. Check that none of these program names already belongs to your work: `VECTORCE`, `VQARROW`, `VQGRAPH`, `VQMATH`, `VQNUM`, `VQPAGE`, `VQSUM`, `VQWORK`. **Do not accept an overwrite of an unrelated program.** Move/rename your existing program on the calculator first if there is a conflict. Keep the supplied names unchanged because programs call each other by name.
-3. Unzip [VECTORCE.zip](dist/VECTORCE.zip). Connect and turn on the calculator using its USB cable. Open Calculator Explorer in TI Connect CE.
+3. Unzip [VECTRA-CE-OS58.zip](dist/VECTRA-CE-OS58.zip) (or the identical current [VECTORCE.zip](dist/VECTORCE.zip)). Connect and turn on the calculator using its USB cable. Open Calculator Explorer in TI Connect CE.
 4. Select **all eight `.8xp` files** from the package and drag them into Calculator Explorer (or use Send to Calculators). Send them to **RAM**. Allow at least 20 KB free RAM for programs, matrix, strings, and execution; more is helpful. No App installation is required.
 5. On the calculator press **PRGM**, choose **VECTORCE** under EXEC, press **ENTER**, then **ENTER** to run it. Run only VECTORCE; the other programs are helpers.
-6. Read the workspace notice and press ENTER. Choose CANCEL unless matrix **[J]** can be erased. YES START begins a new empty session. This does not erase any user lists.
+6. Read the workspace notice and press ENTER. Choose CANCEL unless matrix **[J]** can be erased. YES START initializes an empty session and shows the VECTRA CE loading screen. Press ENTER when READY appears to open the main menu. This does not erase any user lists.
 
 The program uses [J], A–Z, θ, Str1 and Str2. **Back up any values you need in these variables first.** See [variables and settings](docs/VARIABLES.md). It never creates, deletes, or replaces a program at runtime. All vectors remain in [J] after quitting, but a new run clears them after asking again; there is no session-resume feature.
 
@@ -95,15 +99,17 @@ The calculator keeps its native numeric precision internally; no `round(` is use
 - **HEAD TO TAIL:** numbered blue arrows in input order and the red resultant from (0,0) to the last endpoint.
 - **COMMON ORIGIN:** all blue vectors start at (0,0); red is the total resultant.
 - **INSPECT TRIANGLE:** enter a vector number, or `0` for the resultant. The triangle opens directly; use SHOW WORK from the main menu or vector options when you want the calculations. Green is the signed horizontal component; orange is the vertical leg; blue is the vector/hypotenuse. Side values and the standard angle appear on screen. The triangle is independently scaled to the selected vector.
-- **STEP THROUGH:** starts at no vectors, then adds/removes one at a time, displaying the running red resultant and count.
+- **STEP THROUGH:** starts at no vectors, then adds/removes one at a time, displaying the running red resultant and count. Its window fits the complete sequence and stays steady while stepping, so changes in length remain meaningful.
 
-Axes are labeled +X and +Y. There are no numerical tick labels: the window is for shape and direction; use the numerical work pages for exact lengths. Every plot includes the origin and all relevant endpoints, with a margin. The x/y window span ratio is `264/164`, matching CE graph-pixel spans, so one horizontal unit and one vertical unit have equal screen lengths. Changing window size alone without respecting that ratio would distort angles.
+Axes are labeled +X and +Y. There are no numerical tick labels: the window is for shape and direction; use the numerical work pages for exact lengths. Each view fits the origin and its relevant endpoints inside the plot area, reserving space for titles and controls. Head-to-tail includes every cumulative endpoint, common-origin includes the individual endpoints and total resultant, and triangle inspection includes only the selected triangle. The data's bounding box is centered, so a positive-only set no longer leaves three unused quadrants. A 16% margin accommodates arrowheads and labels; at least one dimension fills about 86% of the available plotting area. All-zero data uses a finite fallback window.
+
+The x/y window span ratio remains `264/164`, matching CE graph-pixel spans, so one horizontal unit and one vertical unit have equal screen lengths. Tall/narrow data can still leave horizontal space and wide/flat data can leave vertical space because preserving this ratio keeps angles and triangles accurate. Arrowheads have a consistent six-pixel size and shrink for short vectors.
 
 Arrowheads shrink for short arrows. Zero vectors draw a point. In overview plots, identical or collinear arrows and their number labels may overlap; the red resultant is drawn last. Select their individual triangles to inspect them separately. Vectors many orders of magnitude smaller than the largest may be subpixel in an overview; triangle inspection rescales them. This is a screen-resolution limit, not lost stored precision.
 
 ## Settings and troubleshooting
 
-Normal exit restores the initial degree/radian mode. The program sets Normal, Float and Real modes. Graphing also sets Full/Func, disables equations and stat plots, turns axes/grid/coordinates/expressions/background off, and changes the graph window. It preserves equation contents, user lists, and pictures/GDBs; it **does not** automatically restore the previous graph/display settings. It avoids a StoreGDB backup that might overwrite your existing GDB. Record your window/modes beforehand if needed.
+Normal exit restores the initial degree/radian mode. The program sets Normal, Float and Real modes. The startup splash after YES START and subsequent graphs also set Full/Func, disable equations and stat plots, turn axes/grid/coordinates/expressions/background off, and change the graph window. It preserves equation contents, user lists, and pictures/GDBs; it **does not** automatically restore the previous graph/display settings. It avoids a StoreGDB backup that might overwrite your existing GDB. Record your window/modes beforehand if needed. CANCEL at the workspace prompt does not change the graph settings.
 
 Afterward, use MODE to restore desired display/graph modes; WINDOW for your old bounds (or ZOOM → ZStandard for the ordinary standard window); Y= to re-enable desired equations; 2nd Y= for stat plots; and 2nd ZOOM (FORMAT) for axes/background. ZStandard is a convenient reset, **not restoration of your exact previous window**.
 

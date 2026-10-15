@@ -1,23 +1,46 @@
 prgmVQSUM
-0→S
-For(K,1,N)
-max(S,abs([J](K,1)))→S
-max(S,abs([J](K,2)))→S
-max(S,abs([J](K,6)))→S
-max(S,abs([J](K,7)))→S
-End
+0→U
+0→V
+0→W
+0→Z
 If G=3
 Then
 If L=0
 Then
-max(abs(X),abs(Y))→S
+X→C
+Y→D
 Else
-max(abs([J](L,1)),abs([J](L,2)))→S
+[J](L,1)→C
+[J](L,2)→D
 End
+min(0,C)→U
+max(0,C)→V
+min(0,D)→W
+max(0,D)→Z
+Else
+For(K,1,N)
+If G=2
+Then
+[J](K,1)→C
+[J](K,2)→D
+Else
+[J](K,6)→C
+[J](K,7)→D
 End
+min(U,C)→U
+max(V,C)→V
+min(W,D)→W
+max(Z,D)→Z
+End
+min(U,X)→U
+max(V,X)→V
+min(W,Y)→W
+max(Z,Y)→Z
+End
+max((V-U)/240,(Z-W)/98)→S
 If S=0
-1→S
-1.75S→S
+1/98→S
+1.16S→S
 Full
 Func
 FnOff
@@ -27,25 +50,30 @@ GridOff
 CoordOff
 ExprOff
 BackgroundOff
-⁻S→Ymin
-S→Ymax
-⁻S*264/164→Xmin
-S*264/164→Xmax
-S→Xscl
-S→Yscl
+(U+V)/2-132S→Xmin
+Xmin+264S→Xmax
+(W+Z)/2+81S→Ymax
+Ymax-164S→Ymin
+20S→Xscl
+20S→Yscl
 1→Xres
 0→M
 If G≠4
 N→M
 Lbl RD
 ClrDraw
-Line(⁻1.5S,0,1.5S,0,23)
-Line(0,⁻.66S,0,.66S,23)
-Line(Xmin,.71S,Xmax,.71S,23)
-Line(Xmin,⁻.66S,Xmax,⁻.66S,23)
+Line(Xmin,Ymax,Xmax,Ymax,10)
+Line(Xmin,Ymax-13S,Xmax,Ymax-13S,23)
+Line(Xmin,Ymax-26S,Xmax,Ymax-26S,10)
+Line(Xmin,Ymax-140S,Xmax,Ymax-140S,23)
+Line(Xmin+12S,0,Xmax-12S,0,23)
+Line(0,Ymax-32S,0,Ymax-130S,23)
 TextColor(12)
-Text(74,250,"+X")
-Text(26,135,"+Y")
+Text(max(32,min(130,int(Ymax/S)-9)),244,"+X")
+Text(30,max(14,min(242,int((0-Xmin)/S)+3)),"+Y")
+TextColor(17)
+Text(3,6,"VECTRA")
+Text(3,218,"CLEAR BACK")
 If G=3
 Then
 If L=0
@@ -65,14 +93,21 @@ Line(C,0,C,D,15)
 0→B
 10→E
 prgmVQARROW
-Text(139,4,"GREEN X / ORANGE Y / BLUE R")
-Text(2,4,"TRIANGLE ",L,"  (0=RESULT)")
-Text(2,218,"CLEAR BACK")
-Text(151,4,"X=",C,"  Y=",D)
+TextColor(17)
+If L=0
+Text(3,65,"RESULT TRIANGLE")
+If L>0
+Text(3,65,"VECTOR ",L," TRIANGLE")
+TextColor(14)
+Text(145,6,"X=",C)
+TextColor(15)
+Text(145,137,"Y=",D)
+TextColor(12)
+Text(156,6,"GREEN X  /  ORANGE Y  /  BLUE VECTOR")
 If R>0
-Text(13,4,"R=",R,"  DEG CCW=",T)
+Text(17,6,"R=",R,"   ANGLE=",T," DEG")
 If R=0
-Text(13,4,"ZERO: DIRECTION UNDEFINED")
+Text(17,6,"ZERO: DIRECTION UNDEFINED")
 Else
 For(K,1,M)
 0→A
@@ -92,7 +127,7 @@ End
 10→E
 prgmVQARROW
 TextColor(10)
-Text(max(33,min(125,int(164*(Ymax-D)/(2S)))),max(0,min(235,int(264*(C-Xmin)/(Xmax-Xmin)))),K)
+Text(max(32,min(131,int((Ymax-D)/S)+3)),max(12,min(246,int((C-Xmin)/S)+3)),K)
 End
 0→A
 0→B
@@ -105,20 +140,26 @@ Then
 End
 11→E
 prgmVQARROW
-TextColor(11)
+TextColor(17)
 If G=1
-Text(2,4,"HEAD TO TAIL")
+Text(3,65,"HEAD TO TAIL")
 If G=2
-Text(2,4,"COMMON ORIGIN")
+Text(3,65,"COMMON ORIGIN")
 If G=4
-Text(2,4,"STEP ",M," / ",N)
+Text(3,65,"STEP ",M," / ",N)
 TextColor(12)
-Text(2,218,"CLEAR BACK")
-Text(13,4,"VECTORS: ",M,"   DEGREES CCW FROM +X")
+Text(17,6,M," VECTORS   /   AUTO FIT   /   CCW +X")
+TextColor(10)
+Text(145,6,"BLUE: VECTORS")
+TextColor(11)
+Text(145,137,"RED: RESULTANT")
 TextColor(12)
-Text(139,4,"BLUE: VECTORS    RED: RESULTANT")
 If G=4
-Text(151,4,"LEFT: BACK   RIGHT/ENTER: ADD")
+Then
+Text(156,6,"LEFT: UNDO   RIGHT/ENTER: NEXT")
+Else
+Text(156,6,"TRUE SCALE   /   CLEAR: BACK")
+End
 End
 Lbl KY
 getKey→J

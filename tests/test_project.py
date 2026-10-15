@@ -72,7 +72,11 @@ class SourceTests(unittest.TestCase):
         # str(1e9) is decimal, so above is valid.
         for g in [1,2,3,4]:
             m.stopped=False;m.v.update(G=g,L=1);m.keys.extend([26,24,45] if g==4 else [45])
-            m.run('VQGRAPH');self.assertGreater(m.v['S'],1e9)
+            m.run('VQGRAPH')
+            self.assertLess(m.v['Xmin'],0)
+            self.assertGreater(m.v['Xmax'],1e9)
+            self.assertLess(m.v['Ymin'],0)
+            self.assertGreater(m.v['Ymax'],1e9)
         m=Machine();m.v.update(A=1e-18,B=-1e-18);m.run('VQMATH')
         self.assertAlmostEqual(m.v['T'],315)
         self.assertTrue(math.isclose(m.v['R'],math.sqrt(2)*1e-18,rel_tol=1e-14))

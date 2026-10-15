@@ -1,6 +1,6 @@
 (sin(90)=1)→θ
 ClrHome
-Output(1,1,"       VECTOR CE R2")
+Output(1,1,"       VECTRA CE R3")
 Output(2,1,"--------------------------")
 Output(3,1,"2D PHYSICS / 20 VECTORS")
 Output(5,1,"DEGREES CCW FROM +X")
@@ -10,16 +10,59 @@ Output(9,1,"ENTER: READ WORKSPACE NOTE")
 Pause
 Menu("USE/ERASE [J]?","CANCEL",EX,"YES START",GO)
 Lbl GO
+Full
+Func
+FnOff
+PlotsOff
+AxesOff
+GridOff
+CoordOff
+ExprOff
+BackgroundOff
+0→Xmin
+264→Xmax
+0→Ymin
+164→Ymax
+1→Xscl
+1→Yscl
+1→Xres
+ClrDraw
+Line(12,150,252,150,10)
+Line(12,14,252,14,10)
+TextColor(12)
+Text(7,16,"PHYSICS / VECTOR STUDIO")
+Text(7,222,"R3")
+Line(96,126,132,98,10)
+Line(132,98,123,100,10)
+Line(132,98,129,107,10)
+Line(132,98,168,126,10)
+Line(168,126,159,124,10)
+Line(168,126,165,117,10)
+Line(96,126,168,126,11)
+Line(168,126,160,130,11)
+Line(168,126,160,122,11)
+TextColor(10)
+Text(⁻1,80,87,"VECTRA CE")
+TextColor(12)
+Text(102,86,"ADD. GRAPH. UNDERSTAND.")
+Text(115,97,"LOADING WORKSPACE")
+Line(42,34,222,34,23)
 {20,7}→dim([J])
+Line(42,34,102,34,14)
 Fill(0,[J])
+Line(102,34,162,34,14)
 0→N
 Degree
 Normal
 Float
 Real
+Line(162,34,222,34,14)
+TextColor(14)
+Text(142,88,"READY / ENTER TO BEGIN")
+Pause
 Lbl MN
 ClrHome
-Menu("VECTOR CE","ADD VECTOR",AD,"VECTORS",LI,"RESULTS",RE,"SHOW WORK",WK,"GRAPHS",GR,"HELP",HE,"QUIT",EX)
+Menu("VECTRA CE","ADD VECTOR",AD,"VECTORS",LI,"RESULTS",RE,"SHOW WORK",WK,"GRAPHS",GR,"HELP",HE,"QUIT",EX)
 Lbl HE
 ClrHome
 Disp "ANGLE: CCW FROM +X","0 EAST, 90 NORTH","180 WEST, 270 SOUTH","ENTER DECIMAL NUMBERS","Q CANCELS ANY INPUT","WORK: ENTER NEXT","WORK/GRAPH: CLEAR BACK","RESULT: 1 WORK,2 TRIANGLE"

@@ -215,8 +215,11 @@ def audit_program(program,name='PROGRAM',available_programs=None):
                     kinds=[audit_expression(arg) for arg in arguments]
                     if first in {'For(','Line(','TextColor('} and any(kind!='num' for kind in kinds):
                         raise ValueError('numeric command arguments required')
-                    if first in {'Output(','Text('} and (kinds[:2]!=['num','num'] or any(kind not in {'num','str'} for kind in kinds[2:])):
-                        raise ValueError('screen coordinates must be numeric, contents numeric/string')
+                    if first in {'Output(','Text('}:
+                        large=first=='Text(' and b''.join(t.bits for t in arguments[0])==b'\xb0\x31'
+                        coordinates=3 if large else 2
+                        if len(kinds)<=coordinates or kinds[:coordinates]!=['num']*coordinates or any(kind not in {'num','str'} for kind in kinds[coordinates:]):
+                            raise ValueError('screen coordinates must be numeric, contents numeric/string')
                     if first=='Fill(' and (kinds[0]!='num' or kinds[1] not in {'list','matrix'}):
                         raise ValueError('Fill requires a number and list/matrix')
                 if first=='For(':
