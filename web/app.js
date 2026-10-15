@@ -6,10 +6,17 @@ function setView(next){view=next;if(view==='step')step=0;render();}
 function stopEdit(){editing=-1;$('formTitle').textContent='Add a vector';$('saveVector').textContent='+ Add vector';$('cancelEdit').hidden=true;$('error').textContent='';}
 function loadDemo(kind){stopEdit();if(kind==='345'){setType('xy');$('xInput').value='3';$('yInput').value='4';}else{setType('polar');$('magnitude').value=kind==='compass'?'24':'10';$('angle').value=kind==='compass'?'30':'0';$('direction').value=kind==='compass'?'EN':'standard';}if(kind==='compass')vectors=[{...VM.polar(24,VM.compass(30,'EN')),angle:30,direction:'EN'}];else if(kind==='345')vectors=[{...VM.components(3,0)},{...VM.components(0,4)}];else vectors=[{...VM.polar(10,0),angle:0,direction:'standard'},{...VM.polar(10,180),angle:180,direction:'standard'}];view='head';selected=-1;step=0;render();}
 document.querySelectorAll('[data-type]').forEach(b=>b.onclick=()=>setType(b.dataset.type));document.querySelectorAll('[data-view]').forEach(b=>b.onclick=()=>setView(b.dataset.view));
-$('vectorForm').onsubmit=e=>{e.preventDefault();try{if(vectors.length>=20&&editing<0)throw Error('Your list is full. Edit or delete a vector first.');let v;
+function saveVector(){try{if(vectors.length>=20&&editing<0)throw Error('Your list is full. Edit or delete a vector first.');let v;
 if(inputType==='polar'){const r=VM.decimal($('magnitude').value),a=VM.decimal($('angle').value),d=$('direction').value;if(r<0)throw Error('Magnitude must be nonnegative.');v={...VM.polar(r,d==='standard'?a:VM.compass(a,d)),angle:a,direction:d,entry:{magnitude:$('magnitude').value,angle:$('angle').value}};}
 else v={...VM.components(VM.decimal($('xInput').value),VM.decimal($('yInput').value)),entry:{x:$('xInput').value,y:$('yInput').value}};
-if(editing<0)vectors.push(v);else vectors[editing]=v;stopEdit();step=Math.min(step,vectors.length);render();}catch(err){$('error').textContent=err.message;}};
+if(editing<0)vectors.push(v);else vectors[editing]=v;stopEdit();step=Math.min(step,vectors.length);render();}catch(err){$('error').textContent=err.message;}}
+$('saveVector').onclick=saveVector;
+$('vectorForm').onsubmit=e=>{e.preventDefault();saveVector();};
+$('vectorForm').addEventListener('keydown',e=>{
+ if(e.key==='Enter'&&!e.isComposing&&e.target.tagName==='INPUT'){
+  e.preventDefault();saveVector();
+ }
+});
 $('cancelEdit').onclick=stopEdit;$('clearAll').onclick=()=>{if(vectors.length&&!confirm('Delete all vectors in this tab?'))return;vectors=[];selected=-1;step=0;stopEdit();render();};
 $('exampleCompass').onclick=()=>loadDemo('compass');$('example345').onclick=()=>loadDemo('345');$('exampleCancel').onclick=()=>loadDemo('cancel');
 $('inspect').onchange=e=>{selected=Number(e.target.value);render();};$('previous').onclick=()=>{step=Math.max(0,step-1);render();};$('next').onclick=()=>{step=Math.min(vectors.length,step+1);render();};

@@ -81,10 +81,34 @@ with sync_playwright() as p:
     page.goto(base+'dist/try-vector.html')
     assert page.locator('#count').inner_text()=='1 / 20'
     assert page.locator('#resultAngle').inner_text()=='60°'
+    # Previews may allow scripts while blocking native form submission.
+    # Exercise the actual single-file artifact inside that restricted frame.
+    page.set_content('<iframe sandbox="allow-scripts" src="'+base+'dist/try-vector.html" style="width:1100px;height:1000px"></iframe>')
+    frame=page.frame_locator('iframe')
+    assert frame.locator('#count').inner_text()=='1 / 20'
+    frame.locator('#magnitude').fill('5');frame.locator('#angle').fill('0')
+    frame.locator('#direction').select_option('standard')
+    frame.locator('#saveVector').click()
+    assert frame.locator('#count').inner_text()=='2 / 20'
+    assert frame.locator('#rx').inner_text()=='17'
+    frame.locator('#angle').press('Enter')
+    assert frame.locator('#count').inner_text()=='3 / 20'
+    assert frame.locator('#rx').inner_text()=='22'
+    frame.locator('[data-type="xy"]').click()
+    frame.locator('#xInput').fill('-2');frame.locator('#yInput').fill('3')
+    frame.locator('#saveVector').click()
+    assert frame.locator('#count').inner_text()=='4 / 20'
+    frame.locator('[aria-label="Edit vector 4"]').click()
+    frame.locator('#xInput').fill('-4');frame.locator('#saveVector').click()
+    assert frame.locator('#count').inner_text()=='4 / 20'
+    assert '-4' in frame.locator('#vectors').inner_text()
+    frame.locator('#xInput').fill('2+3');frame.locator('#saveVector').click()
+    assert frame.locator('#error').inner_text()
+    assert frame.locator('#count').inner_text()=='4 / 20'
     page.goto(base+'docs/calculator-preview.svg')
     page.locator('svg').first.screenshot(path=str(ROOT/'docs/calculator-preview.png'))
     assert not errors,errors
     browser.close()
 server.shutdown()
 server.server_close()
-print('Chromium: examples, views, steps, edit/cancel/delete, zero, invalid input, capacity, all compass choices and mobile layout passed')
+print('Chromium: examples, views, steps, edit/cancel/delete, zero, invalid input, capacity, all compass choices, mobile layout, and restricted-preview click/Enter add/edit validation passed')

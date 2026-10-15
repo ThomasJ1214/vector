@@ -60,3 +60,7 @@ Other checks: malformed decimals and expressions rejected; minimum/maximum allow
 10. Repeat on both requested model variants, or with appropriately owned ROMs in CEmu. Record OS versions and any failures before calling the release hardware-tested.
 
 To test in CEmu, follow its built-in ROM-dump wizard using your calculator, load that ROM, import all eight `.8xp` files, and follow the same checklist. Source-level tests are supplemental, not a substitute for that process.
+
+## Add button regression
+
+Reproduced a failure in Chromium with the single-file demo inside an iframe using `sandbox="allow-scripts"` without `allow-forms`: clicking the old submit button left the vector count unchanged and logged a blocked form submission. The add/save button now uses a direct click action; Enter in an input invokes the same action without submitting the form. Added browser regression checks for polar/component additions, Enter adding exactly once, editing, and invalid-input preservation inside that restricted preview. Previews that disable JavaScript altogether still require opening the downloaded HTML in a browser.
