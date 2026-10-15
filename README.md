@@ -51,8 +51,9 @@ Numeric input accepts ordinary decimals, an optional leading negative sign, and 
 
 | Where | Controls |
 |---|---|
-| Main menu | List/edit, add, result/work, graphs, controls, quit |
-| List/edit | Read the current vector page, ENTER for its options; next/previous wrap around |
+| Main menu | Add Vector, Vectors, Results, Show Work, Graphs, Help, Quit |
+| Vectors | Read the vector, then ENTER for Show Work, Triangle, Edit, Delete, Next, Previous, or Main Menu |
+| Results | Immediate x/y totals, magnitude and angle; 1 or ENTER opens work, 2 opens its triangle, CLEAR returns |
 | Editing | Re-enter the vector using either input type; commits only after both values and direction are valid |
 | Delete | Requires YES; remaining vectors keep their order |
 | Work pages | ENTER next; CLEAR back to the calling menu |
@@ -60,11 +61,19 @@ Numeric input accepts ordinary decimals, an optional leading negative sign, and 
 | Step-through graph | RIGHT or ENTER adds a vector; LEFT removes the latest; endpoints stop at 0 and N |
 | Any numeric prompt | Q + ENTER cancels |
 
-Use MAIN MENU/BACK in menus to navigate. CONTROLS is always available from the main menu. Use **QUIT** for a normal exit. ON interrupts TI-BASIC with the OS break menu; it cannot reliably restore settings or finish an in-progress edit, so use ordinary navigation when possible. If interrupted, choose Quit and use the settings instructions below. Do not edit [J] or the scalar workspace while a session is running.
+Use MAIN MENU/BACK in menus to navigate. HELP is always available from the main menu. Use **QUIT** for a normal exit. ON interrupts TI-BASIC with the OS break menu; it cannot reliably restore settings or finish an in-progress edit, so use ordinary navigation when possible. If interrupted, choose Quit and use the settings instructions below. Do not edit [J] or the scalar workspace while a session is running.
 
 ## Results and work
 
-RESULT / WORK shows total x and y, then each term and its running sum, then magnitude and direction calculations. LIST / EDIT → WORK / TRIANGLE explains an individual vector. Pages show formulas and substituted values separately so they fit the home screen. Component inputs show their derived polar form as a check. All polar formulas use the normalized standard angle, including vectors entered with compass words.
+**RESULTS** immediately shows total x, total y, magnitude, and direction together. You do not have to advance through the calculations to see the answer. Press **1** or **ENTER** for work, **2** for the resultant triangle, or **CLEAR** to return to the main menu.
+
+**SHOW WORK** is also available directly from the main menu. Choose:
+
+- **MAG / DIRECTION** for the magnitude formula, substituted components, quadrant rules, and direction.
+- **COMPONENT SUMS** for each vector's x/y values and the running additions; finishing returns to the work topics.
+- **FULL WORK** for component sums followed by magnitude and direction.
+
+Under **VECTORS**, press ENTER for options and choose **SHOW WORK** to explain that vector, or **TRIANGLE** to open its graph immediately. **VIEW AGAIN** repeats the work, and CLEAR on any work page returns to the calling screen. Pages show formulas and substituted values separately so they fit the home screen. Component inputs show their derived polar form as a check. All polar formulas use the normalized standard angle, including vectors entered with compass words.
 
 The calculation is:
 
@@ -81,7 +90,7 @@ The calculator keeps its native numeric precision internally; no `round(` is use
 
 - **HEAD TO TAIL:** numbered blue arrows in input order and the red resultant from (0,0) to the last endpoint.
 - **COMMON ORIGIN:** all blue vectors start at (0,0); red is the total resultant.
-- **INSPECT TRIANGLE:** enter a vector number, or `0` for the resultant. First read its work, then choose TRIANGLE. Green is the signed horizontal component; orange is the vertical leg; blue is the vector/hypotenuse. Side values and the standard angle appear on screen. The triangle is independently scaled to the selected vector.
+- **INSPECT TRIANGLE:** enter a vector number, or `0` for the resultant. The triangle opens directly; use SHOW WORK from the main menu or vector options when you want the calculations. Green is the signed horizontal component; orange is the vertical leg; blue is the vector/hypotenuse. Side values and the standard angle appear on screen. The triangle is independently scaled to the selected vector.
 - **STEP THROUGH:** starts at no vectors, then adds/removes one at a time, displaying the running red resultant and count.
 
 Axes are labeled +X and +Y. There are no numerical tick labels: the window is for shape and direction; use the numerical work pages for exact lengths. Every plot includes the origin and all relevant endpoints, with a margin. The x/y window span ratio is `264/164`, matching CE graph-pixel spans, so one horizontal unit and one vertical unit have equal screen lengths. Changing window size alone without respecting that ratio would distort angles.

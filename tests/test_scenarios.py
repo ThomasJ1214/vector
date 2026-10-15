@@ -51,16 +51,16 @@ class Scenarios(unittest.TestCase):
         self.assertEqual(self.entry(angle='Degree').angle,'Degree')
 
     def test_list_wrap_zero_and_declined_delete(self):
-        m=self.entry(['ADD VECTOR','X / Y','LIST / EDIT','NEXT','PREVIOUS','DELETE','NO','MAIN MENU'],[0,0])
+        m=self.entry(['ADD VECTOR','X / Y','VECTORS','NEXT','PREVIOUS','DELETE','NO','MAIN MENU'],[0,0])
         self.assertEqual(m.v['N'],1);self.assertEqual(m.v['I'],1)
         self.assertTrue(any('UNDEFINED' in s for s in m.output))
 
     def test_edit_switches_representation(self):
-        m=self.entry(['ADD VECTOR','X / Y','LIST / EDIT','EDIT','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH'],[3,4,24,30])
+        m=self.entry(['ADD VECTOR','X / Y','VECTORS','EDIT','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH'],[3,4,24,30])
         self.assertEqual(m.v['N'],1);self.assertEqual(m.m[0][4],1);self.assertAlmostEqual(m.m[0][0],12)
 
     def test_empty_paths_controls(self):
-        self.entry(['LIST / EDIT','RESULT / WORK','GRAPHS','CONTROLS'])
+        self.entry(['VECTORS','RESULTS','GRAPHS','HELP'])
 
     def test_numeric_recovery_long_chain(self):
         invalid=['',' ','-','⁻','.','-.','..','⁻.','1.2.3','+1','1e3','1/2','(3)','QX','0'*19,'1000000000.1','0.0000000009']*5
@@ -98,7 +98,7 @@ class Scenarios(unittest.TestCase):
     def test_back_from_every_work_page(self):
         for l,pages in [(0,8),(1,8)]:
             for back in range(pages):
-                m=Machine(keys=[105]*back+[45]);m.v.update(N=1,L=l)
+                m=Machine(menus=['FULL WORK'] if l==0 else [],keys=[105]*back+[45]);m.v.update(N=1,L=l)
                 m.m[0][:5]=[-3,4,5,126.869897645844,2];m.run('VQWORK')
                 self.assertFalse(m.keys);self.assertFalse(m.menus)
 

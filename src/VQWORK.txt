@@ -1,6 +1,18 @@
+Lbl WK
 prgmVQSUM
-If L=0
-Then
+If L>0
+Goto VC
+Menu("SHOW RESULT WORK","MAG / DIRECTION",RS,"COMPONENT SUMS",CS,"FULL WORK",FW,"BACK",BK)
+Lbl RS
+X→A
+Y→B
+Goto MG
+Lbl CS
+1→E
+Goto SU
+Lbl FW
+0→E
+Lbl SU
 ClrHome
 Output(1,1,"RESULTANT / COMPONENTS")
 Output(2,1,"--------------------------")
@@ -59,15 +71,15 @@ prgmVQPAGE
 If F=0
 Return
 End
+If E=1
+Goto WK
 X→A
 Y→B
-Else
+Goto MG
+Lbl VC
 [J](L,1)→A
 [J](L,2)→B
-End
 prgmVQMATH
-If L>0
-Then
 ClrHome
 Output(1,1,"POLAR TO COMPONENTS")
 Output(2,1,"--------------------------")
@@ -117,7 +129,8 @@ prgmVQPAGE
 If F=0
 Return
 End
-End
+Lbl MG
+prgmVQMATH
 ClrHome
 Output(1,1,"MAGNITUDE / WORK")
 Output(2,1,"--------------------------")
@@ -214,7 +227,7 @@ End
 prgmVQPAGE
 If F=0
 Return
-Menu("WORK COMPLETE","TRIANGLE",TR,"BACK",BK)
+Menu("WORK COMPLETE","VIEW AGAIN",WK,"TRIANGLE",TR,"BACK",BK)
 Lbl TR
 3→G
 prgmVQGRAPH

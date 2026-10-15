@@ -41,7 +41,7 @@ def screen(m,graph,commands=None):
     return ''.join(pieces)
 def main():
     scenes=[]
-    m=Machine(['YES START','ADD VECTOR','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH','LIST / EDIT','MAIN MENU','QUIT'],['24','30']);m.run('VECTORCE')
+    m=Machine(['YES START','ADD VECTOR','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH','VECTORS','MAIN MENU','QUIT'],['24','30']);m.run('VECTORCE')
     scenes.append(('Review your vector',screen(m,False)))
     for mode,label in [(1,'Head to tail'),(3,'Inspect a component triangle')]:
         m=Machine(keys=[45]);m.v.update(N=2,G=mode,L=0)

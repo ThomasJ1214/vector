@@ -59,11 +59,11 @@ class SourceTests(unittest.TestCase):
             m=Machine(inputs=[bad,'Q']);m.run('VQNUM');self.assertEqual(m.v['F'],0)
 
     def test_cancel_edit_and_delete(self):
-        menus=['YES START','ADD VECTOR','X / Y','LIST / EDIT','EDIT','X / Y',
-               'LIST / EDIT','DELETE','YES','QUIT']
+        menus=['YES START','ADD VECTOR','X / Y','VECTORS','EDIT','X / Y',
+               'VECTORS','DELETE','YES','QUIT']
         m=Machine(menus,['3','4','Q']);m.run('VECTORCE');self.assertEqual(m.v['N'],0)
         # Deletion shifts all data, and canceled edit never commits partial data.
-        menus=['YES START','ADD VECTOR','X / Y','LIST / EDIT','EDIT','X / Y','QUIT']
+        menus=['YES START','ADD VECTOR','X / Y','VECTORS','EDIT','X / Y','QUIT']
         m=Machine(menus,['3','4','9','Q']);m.run('VECTORCE');self.assertEqual(m.m[0][:2],[3,4])
 
     def test_large_small_and_graph_modes(self):
@@ -79,7 +79,7 @@ class SourceTests(unittest.TestCase):
 
     def test_result_pages_and_triangle(self):
         m=self.entry([('X / Y',[-3,4],[])])
-        m.stopped=False;m.v['L']=0;m.menus.extend(['TRIANGLE']);m.keys.extend([105]*8+[45]);m.run('VQWORK')
+        m.stopped=False;m.v['L']=0;m.menus.extend(['FULL WORK','TRIANGLE']);m.keys.extend([105]*8+[45]);m.run('VQWORK')
         self.assertTrue(any('DIRECTION DEG CCW' in s for s in m.output))
         self.assertTrue(any('NORTH OF WEST' in s for s in m.output))
 
@@ -90,11 +90,11 @@ class SourceTests(unittest.TestCase):
         m.run('VQSUM')
         self.assertGreater(m.v['R'],0)
         self.assertEqual(m.v['Z'],2)
-        m.v['L']=0;m.keys.extend([45]);m.run('VQWORK')
+        m.v['L']=0;m.menus.append('FULL WORK');m.keys.extend([45]);m.run('VQWORK')
         self.assertFalse(any('DIRECTION UNDEFINED' in s for s in m.output))
 
     def test_zero_result_has_no_angle(self):
-        m=Machine(menus=['BACK'],keys=[105]*4);m.v['L']=0
+        m=Machine(menus=['FULL WORK','BACK'],keys=[105]*4);m.v['L']=0
         m.run('VQWORK')
         self.assertTrue(any('DIRECTION UNDEFINED' in s for s in m.output))
         self.assertFalse(any('DIRECTION DEG CCW' in s for s in m.output))
@@ -103,7 +103,7 @@ class SourceTests(unittest.TestCase):
         menus=['YES START'];inputs=[]
         for i in range(20):
             menus+=['ADD VECTOR','X / Y'];inputs += [str(i),'0']
-        menus+=['ADD VECTOR','LIST / EDIT','DELETE','YES','MAIN MENU','QUIT']
+        menus+=['ADD VECTOR','VECTORS','DELETE','YES','MAIN MENU','QUIT']
         m=Machine(menus,inputs);m.run('VECTORCE')
         self.assertEqual(m.v['N'],19)
         self.assertEqual([r[0] for r in m.m[:19]],list(range(1,20)))

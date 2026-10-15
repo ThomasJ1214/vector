@@ -26,7 +26,7 @@ TI-BASIC has global variables; do not call helpers directly or interrupt a sessi
 |---|---|
 | A,B | math inputs, arrow start, temporary previous sums |
 | C,D | new magnitude/angle or arrow endpoint |
-| E | input type or drawing color |
+| E | input type, drawing color, or work-topic flag (component sums only versus full work) |
 | F | numeric/pager success flag |
 | G | graph type (1 head-to-tail, 2 origin, 3 triangle, 4 step) |
 | H | scaled magnitude intermediate / arrow length |

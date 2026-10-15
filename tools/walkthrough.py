@@ -65,18 +65,18 @@ def build_scenes():
     enter('MAGNITUDE >= 0','3','The magnitude uses your chosen consistent units.')
     menu('DIRECTION STYLE','STANDARD CCW +X','Choose a direction convention','Standard angles are measured counterclockwise from +x.')
     enter('ANGLE IN DEGREES','0','Zero degrees points east or to the right.')
-    m=main_machine(['YES START','ADD VECTOR','MAG / ANGLE','STANDARD CCW +X','LIST / EDIT','MAIN MENU','QUIT'],[3,0])
+    m=main_machine(['YES START','ADD VECTOR','MAG / ANGLE','STANDARD CCW +X','VECTORS','MAIN MENU','QUIT'],[3,0])
     scene('Review vector 1','The calculator stores x=3, y=0 and magnitude 3.','ENTER: vector options',m,commands=m.pages[1])
     menu('INPUT TYPE','X / Y','Vector 2 / component input','Mix input types: add an upward vector using its components.')
     enter('HORIZONTAL X','0','The second vector has no horizontal component.')
     enter('VERTICAL Y','4','Its positive vertical component points north or up.')
-    m=main_machine(['YES START','ADD VECTOR','X / Y','ADD VECTOR','X / Y','LIST / EDIT','NEXT','MAIN MENU','QUIT'],[3,0,0,4])
+    m=main_machine(['YES START','ADD VECTOR','X / Y','ADD VECTOR','X / Y','VECTORS','NEXT','MAIN MENU','QUIT'],[3,0,0,4])
     scene('Review vector 2','The second vector is 4 units at 90 degrees.','ENTER: vector options',m,commands=m.pages[2])
     menu('GRAPHS','HEAD TO TAIL','Choose a graph view','Head-to-tail shows the actual order of addition.')
     graph([(3,0),(0,4)],1,0,'Head to tail / 3 plus 4','Blue arrows add in sequence. Red joins the origin to the final endpoint.')
     graph([(3,0),(0,4)],2,0,'Compare at a common origin','The same two vectors are drawn from one starting point.')
     graph([(3,0),(0,4)],4,0,'Step through addition',['Start at zero. No vectors have been added yet.','Add vector 1: the running resultant is (3,0).','Add vector 2: the running resultant is (3,4).'],keys=[26,26,45])
-    m=vector_machine([(3,0),(0,4)]);m.v['L']=0;m.keys.extend([105]*11);m.menus.append('BACK');m.run('VQWORK')
+    m=vector_machine([(3,0),(0,4)]);m.v['L']=0;m.keys.extend([105]*11);m.menus.extend(['FULL WORK','BACK']);m.run('VQWORK')
     titles=['Total components','Vector 1 components','Add the first x component','Add the first y component','Vector 2 components','Add the next x component','Add the next y component','Resultant magnitude','Handle the correct quadrant','Substitute the components','Resultant direction']
     captions=['Rx=3 and Ry=4. The stored values retain native precision.','Vector 1 contributes x=3, y=0.','The running x sum becomes 3.','The running y sum remains 0.','Vector 2 contributes x=0, y=4.','Add zero: the x total is still 3.','Add four: the y total becomes 4.','sqrt(3 squared + 4 squared) = 5 units.','Axis cases and negative x values have explicit handling.','Use atan(4/3), then apply the appropriate quadrant correction.','53.13010235 degrees CCW; equivalently north of east.']
     assert len(m.pages)==len(titles)
@@ -86,17 +86,17 @@ def build_scenes():
     menu('DIRECTION STYLE','COMPASS WORDS','Use a compass description','Example: 24 units at 30 degrees east of north.')
     menu('MEASURE FROM','NORTH','Start from north','The first reference direction is north, not east.')
     menu('ANGLE OF NORTH','EAST OF NORTH','Turn toward east','30 degrees east of north converts to 60 degrees CCW from +x.')
-    m=main_machine(['YES START','ADD VECTOR','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH','LIST / EDIT','MAIN MENU','QUIT'],[24,30])
+    m=main_machine(['YES START','ADD VECTOR','MAG / ANGLE','COMPASS WORDS','NORTH','EAST OF NORTH','VECTORS','MAIN MENU','QUIT'],[24,30])
     assert abs(m.m[0][0]-12)<1e-10
     scene('Review a compass vector','x=12; y is approximately 20.78460969; magnitude=24.','ENTER: options',m,commands=m.pages[1],duration=4)
     graph([(-3,4)],3,1,'Negative components / quadrant II','A negative x component points west. The direction is 126.86989765 degrees.')
-    m=vector_machine([(3,0),(-3,0)]);m.v['L']=0;m.keys.extend([105]*9);m.menus.append('BACK');m.run('VQWORK')
+    m=vector_machine([(3,0),(-3,0)]);m.v['L']=0;m.keys.extend([105]*9);m.menus.extend(['FULL WORK','BACK']);m.run('VQWORK')
     assert m.v['R']==0
     scene('Opposite vectors cancel','The resultant is zero. Its direction is undefined, not zero degrees.','ENTER: next / CLEAR: back',m,commands=m.pages[-1],duration=4)
     graph([(3,0),(-3,0)],1,0,'Cancellation / head to tail','The final endpoint returns to the origin.')
     menu('VECTOR OPTIONS','EDIT','Edit without restarting','An edit replaces the selected vector only after all values are valid.')
     menu('DELETE VECTOR?','YES','Delete with confirmation','Delete shifts the remaining vectors while keeping their order.')
-    m=main_machine(['YES START','CONTROLS','QUIT'])
+    m=main_machine(['YES START','HELP','QUIT'])
     scene('Controls are always available','Return to the main menu to review conventions and input limits.','ENTER / main menu',m,commands=m.pages[1])
 
 def svg_for(item,index,total):
