@@ -18,6 +18,10 @@ The two-minute video shows entry, review, vector addition, graph modes, triangle
 
 The browser version is a companion for trying the workflow. The eight `.8xp` programs are the calculator product. JavaScript uses binary64 arithmetic; TI-BASIC uses the calculator's own numeric precision.
 
+## OS 5.8 startup syntax-error fix
+
+If an earlier download gives **ERR:SYNTAX immediately after launch**, use the [rebuilt OS 5.8 package](dist/VECTORCE-OS58.zip). Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM** and run VECTORCE from PRGM. The old build incorrectly encoded Pause, FnOff and PlotsOff as letters; the rebuild uses their real command tokens. Polar input also now uses TI-BASIC `int(` for angle normalization. The build audits the actual saved tokens against CE OS 5.8 metadata, in addition to checksums. Hardware/emulator execution on OS 5.8 has not been performed here.
+
 ## Transfer and run (no computer Python needed)
 
 1. Install **TI Connect CE** for your computer from [Texas Instruments](https://education.ti.com/en/products/computer-software/ti-connect-ce-sw). Use TI Connect **CE**, not the older TI Connect application.
@@ -105,7 +109,7 @@ Afterward, use MODE to restore desired display/graph modes; WINDOW for your old 
 
 - **ERR:UNDEFINED / a helper won't run:** ensure all eight programs are transferred under their original names, in RAM.
 - **ERR:MEMORY:** back up and archive other calculator data to free RAM; don't delete work blindly.
-- **ERR:SYNTAX:** re-transfer the supplied binary files. Hand typing multi-character command names or a minus token in place of negation can cause syntax errors. The text sources are not directly executable files.
+- **ERR:SYNTAX:** replace the earlier app files using the OS 5.8 package above. Hand typing multi-character command names or a minus token in place of negation can cause syntax errors. The text sources are not directly executable files.
 - **Unexpected graph:** only use the program's graph menu during a session; it sets its own window. Inspect a single triangle if arrows overlap.
 
 ## Source and development

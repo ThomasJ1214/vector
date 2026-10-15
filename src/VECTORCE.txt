@@ -164,7 +164,7 @@ Goto CV
 Lbl WS
 180+D→D
 Lbl CV
-D-360floor(D/360)→D
+D-360int(D/360)→D
 C*cos(D)→A
 C*sin(D)→B
 If D≥180

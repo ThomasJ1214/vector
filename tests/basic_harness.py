@@ -10,7 +10,7 @@ from collections import deque
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-TOKEN = re.compile(r'"[^"]*"|Xmin|Xmax|Ymin|Ymax|Xscl|Yscl|Xres|inString|Str[12]|\[J\]|tan⁻¹|[a-z]+|\d*\.\d+|\d+|[A-Zθ]|[^\s]')
+TOKEN = re.compile(r'"[^"]*"|Xmin|Xmax|Ymin|Ymax|Xscl|Yscl|Xres|iPart|inString|Str[12]|\[J\]|tan⁻¹|[a-z]+|\d*\.\d+|\d+|[A-Zθ]|[^\s]')
 
 class Machine:
     def __init__(self, menus=(), inputs=(), keys=(), initial_angle="Degree"):
@@ -37,8 +37,8 @@ class Machine:
     def expr(self, source):
         tokens = TOKEN.findall(source.strip())
         pos = 0
-        funcs = {'abs': abs, 'max': max, 'min': min, 'floor': math.floor,
-                 'int': math.trunc, 'length': len,
+        funcs = {'abs': abs, 'max': max, 'min': min,
+                 'int': math.floor, 'iPart': math.trunc, 'length': len,
                  'sin': lambda x: math.sin(math.radians(x) if self.angle=="Degree" else x),
                  'cos': lambda x: math.cos(math.radians(x) if self.angle=="Degree" else x),
                  'tan⁻¹': lambda x: math.degrees(math.atan(x)) if self.angle=="Degree" else math.atan(x),

@@ -24,3 +24,11 @@ Attempts to retrieve the [TI-84 Plus CE reference guide](https://education.ti.co
 - Matrix [J] holds data after visible consent, leaving user lists alone. No automatic GDB/picture backup can overwrite existing files.
 - Lines and short angled line segments make arrows. Color constants are numeric: blue 10, red 11, black 12, green 14, orange 15, gray 23.
 - All code is tokenized against the CE model. The latest required token family according to tivars' minimum-OS metadata is inherited color-84 functionality; CE support is an intended compatibility target, pending calculator/emulator acceptance testing.
+
+## OS 5.8 syntax repair
+
+A later audit of the actual shipped bytes found a tokenizer spelling issue in tivars 1.1.1: commands with optional arguments use canonical spellings with trailing spaces. Bare source `Pause`, `FnOff` and `PlotsOff` had been encoded as letter tokens, rather than D8, 97 and EA. The builder now supplies the canonical spellings internally and verifies the exact opcodes on every affected source line. It also rejects unexpected lowercase executable characters outside quoted strings.
+
+The original angle normalization used `floor(`, which is not a TI-BASIC function. It now uses `int(` (B1), defined by the pinned ClrHome catalog as the largest integer less than or equal to its argument. `iPart(` instead truncates toward zero; the source harness was corrected to distinguish these functions. Negative angle-wrap checks pass with the supported function.
+
+All used commands have token minimum-version metadata compatible with TI-84 Plus CE OS 5.8. The build checks numeric version components for the CE model, including the distinction between 5.8 and 5.10. This confirms command availability and repaired encoding, not execution on a 5.8 calculator or emulator.

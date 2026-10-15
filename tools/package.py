@@ -20,6 +20,7 @@ def package():
             info.compress_type = ZIP_DEFLATED
             info.external_attr = 0o644 << 16
             z.writestr(info, p.read_bytes())
+    (out / 'VECTORCE-OS58.zip').write_bytes(target.read_bytes())
     print(f'{target.name}: {len(included)} files, {target.stat().st_size} bytes')
 
 if __name__ == '__main__':
