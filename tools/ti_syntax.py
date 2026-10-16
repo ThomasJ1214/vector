@@ -3,6 +3,13 @@
 Checks actual token boundaries and identifier contexts, not just readable text.
 This is not TI's OS parser or a calculator emulator.
 """
+try:
+    from tools.ce_domains import (validate_color, validate_line, validate_text,
+                                  validate_window, validate_window_store)
+except ModuleNotFoundError:
+    from ce_domains import (validate_color, validate_line, validate_text,
+                            validate_window, validate_window_store)
+
 
 ALPHANUM = set(b'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789') | {0x5b}
 FIRST_NAME = set(b'ABCDEFGHIJKLMNOPQRSTUVWXYZ') | {0x5b}
@@ -66,6 +73,49 @@ def scalar(tokens):
 
 
 SYSTEM_VALUES={'Xmin','Xmax','Ymin','Ymax','Xscl','Yscl','Xres'}
+NUMBER_BITS={bytes((n,)) for n in range(0x30,0x3b)}
+
+
+def literal_number(tokens):
+    """Read only actual digit/decimal tokens with optional TI negation.
+
+    Dynamic expressions remain unknown. No source evaluation or substitution
+    is used, so an unknown argument cannot hide a different invalid literal.
+    """
+    bits=[token.bits for token in tokens]
+    negative=bool(bits) and bits[0]==b'\xb0'
+    if negative:bits=bits[1:]
+    if not bits or any(bit not in NUMBER_BITS for bit in bits):
+        return None
+    spelling=b''.join(bits).decode('ascii').replace(':','.')
+    if spelling.count('.')>1 or not any(c.isdigit() for c in spelling):return None
+    return -float(spelling) if negative else float(spelling)
+
+
+def audit_literal_domains(command, arguments):
+    """Apply project drawing guards to every statically known argument."""
+    values=[literal_number(argument) for argument in arguments]
+    if command=='TextColor(':
+        if values[0] is not None:validate_color(values[0])
+    elif command=='Line(':
+        # Valid defaults stand in for unknown arguments; the known arguments
+        # are still checked independently. Runtime checks cover expressions.
+        defaults=[0,0,0,0,1,1]
+        validate_line([default if value is None else value
+                       for value,default in zip(values,defaults)])
+    elif command=='Text(':
+        large=values[0]==-1
+        start=1 if large else 0
+        row=values[start] if values[start] is not None else 0
+        column=values[start+1] if values[start+1] is not None else 0
+        contents=[value if value is not None else ''
+                  for value in values[start+2:]]
+        validate_text(([-1] if large else [])+[row,column]+contents)
+
+
+def audit_known_window(values):
+    if all(name in values for name in ('Xmin','Xmax','Ymin','Ymax')):
+        validate_window(values)
 
 
 class Expression:
@@ -184,11 +234,15 @@ def writable(tokens):
 
 def audit_program(program,name='PROGRAM',available_programs=None):
     labels={};destinations=[];calls=[];blocks=[];previous=None;statement_count=0
+    known_window={}
     for number,line in enumerate(lines_of(program),1):
         if not line:continue
         statement_count+=1
         first=line[0].display.strip()
         try:
+            # Constants are only propagated through straight-line blocks.
+            if first in {'Lbl','Goto','If','Else','End','Repeat','For('}:
+                known_window.clear()
             if first in ('Lbl','Goto'):
                 destination=identifier(line[1:],2,first)
                 if first=='Lbl':
@@ -222,11 +276,14 @@ def audit_program(program,name='PROGRAM',available_programs=None):
                             raise ValueError('screen coordinates must be numeric, contents numeric/string')
                     if first=='Fill(' and (kinds[0]!='num' or kinds[1] not in {'list','matrix'}):
                         raise ValueError('Fill requires a number and list/matrix')
+                    audit_literal_domains(first,arguments)
+                    if first=='Line(':audit_known_window(known_window)
                 if first=='For(':
                     if not scalar(arguments[0]):raise ValueError('For requires a scalar loop variable')
                     blocks.append(('For',number))
             elif first in ZERO_ARGS:
                 if len(line)!=1:raise ValueError(f'{first} takes no arguments here')
+                if first=='ClrDraw':audit_known_window(known_window)
                 if first=='Then':
                     if previous!='If':raise ValueError('Then must follow If')
                     blocks.append(('Then',number))
@@ -257,6 +314,13 @@ def audit_program(program,name='PROGRAM',available_programs=None):
                 if len(stores)!=1:raise ValueError('expected an assignment or recognized command')
                 at=stores[0];value_kind=audit_expression(line[:at]);target_kind=writable(line[at+1:])
                 if value_kind!=target_kind:raise ValueError('assignment type mismatch')
+                if len(line[at+1:])==1 and line[at+1].display in SYSTEM_VALUES:
+                    target=line[at+1].display
+                    value=literal_number(line[:at])
+                    if value is None:known_window.pop(target,None)
+                    else:
+                        validate_window_store(target,value)
+                        known_window[target]=value
             previous=first
         except ValueError as e:
             raise ValueError(f'{name}:{number}: {e}') from e

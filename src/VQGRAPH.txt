@@ -63,17 +63,16 @@ N→M
 Lbl RD
 ClrDraw
 Line(Xmin,Ymax,Xmax,Ymax,10)
-Line(Xmin,Ymax-13S,Xmax,Ymax-13S,23)
-Line(Xmin,Ymax-26S,Xmax,Ymax-26S,10)
-Line(Xmin,Ymax-140S,Xmax,Ymax-140S,23)
+Line(Xmin,Ymax-32S,Xmax,Ymax-32S,10)
+Line(Xmin,Ymax-132S,Xmax,Ymax-132S,23)
 Line(Xmin+12S,0,Xmax-12S,0,23)
 Line(0,Ymax-32S,0,Ymax-130S,23)
 TextColor(12)
-Text(max(32,min(130,int(Ymax/S)-9)),244,"+X")
-Text(30,max(14,min(242,int((0-Xmin)/S)+3)),"+Y")
+Text(max(33,min(114,int(Ymax/S)-9)),244,"+X")
+Text(35,max(14,min(242,int((0-Xmin)/S)+3)),"+Y")
 TextColor(17)
 Text(3,6,"VECTRA")
-Text(3,218,"CLEAR BACK")
+Text(3,237,"CLR")
 If G=3
 Then
 If L=0
@@ -99,15 +98,20 @@ Text(3,65,"RESULT TRIANGLE")
 If L>0
 Text(3,65,"VECTOR ",L," TRIANGLE")
 TextColor(14)
-Text(145,6,"X=",C)
+Text(134,6,"X=",C)
 TextColor(15)
-Text(145,137,"Y=",D)
+Text(134,137,"Y=",D)
 TextColor(12)
-Text(156,6,"GREEN X  /  ORANGE Y  /  BLUE VECTOR")
+Text(150,6,"X GREEN / Y ORANGE / R BLUE")
 If R>0
-Text(17,6,"R=",R,"   ANGLE=",T," DEG")
+Then
+TextColor(10)
+Text(17,6,"R=",R)
+TextColor(12)
+Text(17,137,"DEG=",T)
+End
 If R=0
-Text(17,6,"ZERO: DIRECTION UNDEFINED")
+Text(17,6,"ZERO: NO DIRECTION")
 Else
 For(K,1,M)
 0→A
@@ -127,7 +131,7 @@ End
 10→E
 prgmVQARROW
 TextColor(10)
-Text(max(32,min(131,int((Ymax-D)/S)+3)),max(12,min(246,int((C-Xmin)/S)+3)),K)
+Text(max(33,min(118,int((Ymax-D)/S)+3)),max(12,min(228,int((C-Xmin)/S)+3)),K)
 End
 0→A
 0→B
@@ -148,17 +152,17 @@ Text(3,65,"COMMON ORIGIN")
 If G=4
 Text(3,65,"STEP ",M," / ",N)
 TextColor(12)
-Text(17,6,M," VECTORS   /   AUTO FIT   /   CCW +X")
+Text(17,6,M," VEC / AUTO FIT / CCW +X")
 TextColor(10)
-Text(145,6,"BLUE: VECTORS")
+Text(134,6,"VECTORS")
 TextColor(11)
-Text(145,137,"RED: RESULTANT")
+Text(134,137,"RESULTANT")
 TextColor(12)
 If G=4
 Then
-Text(156,6,"LEFT: UNDO   RIGHT/ENTER: NEXT")
+Text(150,6,"LEFT UNDO / RIGHT-ENTER NEXT")
 Else
-Text(156,6,"TRUE SCALE   /   CLEAR: BACK")
+Text(150,6,"TRUE SCALE / CLEAR BACK")
 End
 End
 Lbl KY

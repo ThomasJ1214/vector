@@ -41,7 +41,7 @@ def screen(m,graph,commands=None):
                 _,c,*args=command
                 large=args[0]==-1
                 y,x,*values=args[1:] if large else args
-                pieces.append(text(x,y+(14 if large else 6),''.join(map(number,values)),COLORS[c],size=15.5 if large else 6.5))
+                pieces.append(text(x,y+(20 if large else 12),''.join(map(number,values)),COLORS[c],size=20 if large else 11.5))
     else:
         pieces.append(home_screen(home_page(m,'VECTOR LIST') if commands is None else commands))
     return ''.join(pieces)

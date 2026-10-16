@@ -8,6 +8,14 @@ import math
 import re
 from collections import deque
 from pathlib import Path
+try:
+    from tools.ce_domains import (WINDOW_VALUES, validate_color, validate_line,
+                                  validate_text, validate_window,
+                                  validate_window_store)
+except ModuleNotFoundError:
+    from ce_domains import (WINDOW_VALUES, validate_color, validate_line,
+                            validate_text, validate_window,
+                            validate_window_store)
 
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN = re.compile(r'"[^"]*"|Xmin|Xmax|Ymin|Ymax|Xscl|Yscl|Xres|iPart|inString|Str[12]|\[J\]|tan⁻¹|[a-z]+|\d*\.\d+|\d+|[A-Zθ]|[^\s]')
@@ -157,13 +165,19 @@ class Machine:
                         self.frames.append(list(self.graph))
                         self.pages.append(list(self.home))
                         self.v[target]=self.keys.popleft()
-                    else: self.v[target]=self.expr(source)
+                    else:
+                        value=self.expr(source)
+                        if target in WINDOW_VALUES:
+                            validate_window_store(target,value)
+                        self.v[target]=value
                 else: raise AssertionError('Unknown store: '+s)
             elif s.startswith('Fill('):
                 for row in self.m: row[:]=[0.]*len(row)
             elif s in ('Degree','Radian'): self.angle=s
             elif s=='ClrHome': self.home=[]
-            elif s=='ClrDraw': self.graph=[]
+            elif s=='ClrDraw':
+                validate_window(self.v)
+                self.graph=[]
             elif s=='Pause':
                 self.pages.append(list(self.home))
                 self.paused_graphs.append(list(self.graph))
@@ -173,17 +187,22 @@ class Machine:
             elif s.startswith('Output('):
                 self.output.append(s)
                 row,col,value=map(self.expr,self.split(s[7:-1]))
-                assert 1<=row<=10 and 1<=col<=26, s
+                assert row==int(row) and col==int(col) and 1<=row<=10 and 1<=col<=26, s
                 self.home.append(('Output',row,col,value))
-            elif s.startswith('TextColor('): self.text_color=self.expr(s[10:-1])
+            elif s.startswith('TextColor('):
+                color=self.expr(s[10:-1])
+                validate_color(color)
+                self.text_color=color
             elif s.startswith('Text('):
                 args=list(map(self.expr,self.split(s[5:-1])))
-                coords=args[1:] if args[0]==-1 else args
-                assert len(coords)>=3 and 0<=coords[0]<=158 and 0<=coords[1]<=264, (s,args)
+                validate_window(self.v)
+                validate_text(args)
                 self.graph.append(('Text',self.text_color,*args))
                 self.output.append(s)
             elif s.startswith('Line('):
                 args=list(map(self.expr,self.split(s[5:-1])))
+                validate_window(self.v)
+                validate_line(args)
                 assert len(args)==5
                 assert all(math.isfinite(x) for x in args)
                 self.graph.append(('Line',*args))

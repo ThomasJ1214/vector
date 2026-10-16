@@ -12,7 +12,7 @@ The sequence begins with an empty session, adds (3,0) and (0,4), reviews both ve
 
 Example vectors appear only within the opt-in walkthrough and example buttons. The interactive browser app itself starts with an empty list and blank fields.
 
-The stored video/images show the earlier VECTOR CE appearance. The current VECTRA CE R3 startup and tighter graph layouts are shown in [the updated calculator picture](../calculator-preview.png). Rebuilding this generator uses the current source menus and graph layouts; the archived video has not been regenerated for R3.
+The stored video/images show the earlier VECTOR CE appearance. The current VECTRA CE R4 startup and graph layouts are shown in [the updated calculator picture](../calculator-preview.png). Rebuilding this generator uses the current source menus and graph layouts; the archived video has not been regenerated for R4.
 
 ## Rebuild
 

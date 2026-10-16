@@ -98,6 +98,6 @@ class NativeSyntax(unittest.TestCase):
             source=(ROOT/'src'/f'{path.stem}.txt').read_text(encoding='utf-8')
             self.assertEqual(report['statements'],len([s for s in source.splitlines() if s]))
             count+=report['statements']
-        self.assertEqual(count,863)
+        self.assertEqual(count,867)
 
 if __name__=='__main__':unittest.main()

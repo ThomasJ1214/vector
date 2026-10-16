@@ -1,6 +1,6 @@
 (sin(90)=1)→θ
 ClrHome
-Output(1,1,"       VECTRA CE R3")
+Output(1,1,"       VECTRA CE R4")
 Output(2,1,"--------------------------")
 Output(3,1,"2D PHYSICS / 20 VECTORS")
 Output(5,1,"DEGREES CCW FROM +X")
@@ -27,11 +27,11 @@ BackgroundOff
 1→Yscl
 1→Xres
 ClrDraw
-Line(12,150,252,150,10)
-Line(12,14,252,14,10)
+Line(12,140,252,140,10)
+Line(12,2,252,2,10)
 TextColor(12)
 Text(7,16,"PHYSICS / VECTOR STUDIO")
-Text(7,222,"R3")
+Text(7,222,"R4")
 Line(96,126,132,98,10)
 Line(132,98,123,100,10)
 Line(132,98,129,107,10)
@@ -42,10 +42,10 @@ Line(96,126,168,126,11)
 Line(168,126,160,130,11)
 Line(168,126,160,122,11)
 TextColor(10)
-Text(⁻1,80,87,"VECTRA CE")
+Text(⁻1,80,78,"VECTRA CE")
 TextColor(12)
-Text(102,86,"ADD. GRAPH. UNDERSTAND.")
-Text(115,97,"LOADING WORKSPACE")
+Text(104,56,"ADD. GRAPH. UNDERSTAND.")
+Text(116,74,"LOADING WORKSPACE")
 Line(42,34,222,34,23)
 {20,7}→dim([J])
 Line(42,34,102,34,14)
@@ -58,7 +58,7 @@ Float
 Real
 Line(162,34,222,34,14)
 TextColor(14)
-Text(142,88,"READY / ENTER TO BEGIN")
+Text(146,60,"READY / ENTER TO BEGIN")
 Pause
 Lbl MN
 ClrHome

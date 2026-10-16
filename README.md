@@ -18,19 +18,23 @@ The two-minute video shows entry, review, vector addition, graph modes, triangle
 
 The browser version is a companion for trying the workflow. The eight `.8xp` programs are the calculator product. JavaScript uses binary64 arithmetic; TI-BASIC uses the calculator's own numeric precision.
 
-## VECTRA CE / R3 calculator update
+## VECTRA CE / R4 graph error repair
 
-Download [VECTRA CE for OS 5.8](dist/VECTRA-CE-OS58.zip). Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM**. Keep launching **VECTORCE** from PRGM. The workspace notice identifies **VECTRA CE R3**, followed by a vector-logo loading screen after YES START; press ENTER when ready. New sessions still start empty.
+If the R3 download gives **ERR:DOMAIN when opening a graph**, download [VECTRA CE R4 for OS 5.8](dist/VECTRA-CE-OS58-r4.zip). R3 placed a footer at row 156 without reserving enough room for the CE's text height. R4 moves it to row 150, separates it from the legend, and gives titles and numbers more room. The earlier preview and tests assumed text that was too small; both have been corrected.
+
+Back up your calculator, then use TI Connect CE to **replace all eight program files belonging to this app in RAM**. Keep launching **VECTORCE** from PRGM. The workspace notice and loading screen identify **VECTRA CE R4**. This versioned download has a new filename so it is easy to distinguish from the previous ZIP. After YES START, press ENTER when READY appears. New sessions still start empty.
 
 Graphs now fit and center the actual endpoints in each view, with equal horizontal and vertical unit scales. This makes the vectors larger without distorting angles. Common-origin uses its own bounds, individual/resultant triangles get independent close-ups, and step-through keeps a steady window for the complete path. Navy titles, blue dividers, color-coded legends, and separate component readouts keep the plot clear.
 
-R3 retains the OS 5.8 syntax repairs: correct Pause/FnOff/PlotsOff command tokens, supported `int(` angle normalization, and the P1 label repair. Every saved program passes the token and instruction-grammar audit. The earlier [R2 package](dist/VECTORCE-OS58-r2.zip) is retained as the previous build. The browser companion and earlier walkthrough video retain their earlier appearance. No hardware/emulator execution of R3 has been performed here.
+R4 retains the OS 5.8 syntax repairs: correct Pause/FnOff/PlotsOff command tokens, supported `int(` angle normalization, and the P1 label repair. Build checks now also enforce conservative text margins, integral drawing coordinates, valid colors/styles, and graph window settings. The package step refuses stale binaries, damaged containers, or failed audits. The earlier [R2 package](dist/VECTORCE-OS58-r2.zip) is retained as the previous build. The browser companion and earlier walkthrough video retain their earlier appearance.
+
+**94 automated tests pass**, including the reported inputs **25 at 25° plus 35 at 255°**, all graph views and selected triangles, step/undo, and return to results/work. For those standard CCW inputs the expected resultant is approximately **26.92808354 units at 300.3322051°**, with x ≈ 13.59902810 and y ≈ -23.24194738. These are source/argument-domain checks and saved-file checks; no hardware/emulator execution of R4 has been performed here.
 
 ## Transfer and run (no computer Python needed)
 
 1. Install **TI Connect CE** for your computer from [Texas Instruments](https://education.ti.com/en/products/computer-software/ti-connect-ce-sw). Use TI Connect **CE**, not the older TI Connect application.
 2. Back up your calculator with TI Connect CE first. Check that none of these program names already belongs to your work: `VECTORCE`, `VQARROW`, `VQGRAPH`, `VQMATH`, `VQNUM`, `VQPAGE`, `VQSUM`, `VQWORK`. **Do not accept an overwrite of an unrelated program.** Move/rename your existing program on the calculator first if there is a conflict. Keep the supplied names unchanged because programs call each other by name.
-3. Unzip [VECTRA-CE-OS58.zip](dist/VECTRA-CE-OS58.zip) (or the identical current [VECTORCE.zip](dist/VECTORCE.zip)). Connect and turn on the calculator using its USB cable. Open Calculator Explorer in TI Connect CE.
+3. Unzip [VECTRA-CE-OS58-r4.zip](dist/VECTRA-CE-OS58-r4.zip) (or the identical current [VECTORCE.zip](dist/VECTORCE.zip)). Connect and turn on the calculator using its USB cable. Open Calculator Explorer in TI Connect CE.
 4. Select **all eight `.8xp` files** from the package and drag them into Calculator Explorer (or use Send to Calculators). Send them to **RAM**. Allow at least 20 KB free RAM for programs, matrix, strings, and execution; more is helpful. No App installation is required.
 5. On the calculator press **PRGM**, choose **VECTORCE** under EXEC, press **ENTER**, then **ENTER** to run it. Run only VECTORCE; the other programs are helpers.
 6. Read the workspace notice and press ENTER. Choose CANCEL unless matrix **[J]** can be erased. YES START initializes an empty session and shows the VECTRA CE loading screen. Press ENTER when READY appears to open the main menu. This does not erase any user lists.
@@ -115,7 +119,7 @@ Afterward, use MODE to restore desired display/graph modes; WINDOW for your old 
 
 - **ERR:UNDEFINED / a helper won't run:** ensure all eight programs are transferred under their original names, in RAM.
 - **ERR:MEMORY:** back up and archive other calculator data to free RAM; don't delete work blindly.
-- **ERR:SYNTAX:** replace the earlier app files using the OS 5.8 package above. Hand typing multi-character command names or a minus token in place of negation can cause syntax errors. The text sources are not directly executable files.
+- **ERR:SYNTAX / ERR:DOMAIN:** replace all eight earlier app files using the R4 package above. Check for R4 on the startup screen. Hand typing multi-character command names or a minus token in place of negation can cause syntax errors. The text sources are not directly executable files.
 - **Unexpected graph:** only use the program's graph menu during a session; it sets its own window. Inspect a single triangle if arrows overlap.
 
 ## Source and development
